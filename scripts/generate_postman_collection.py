@@ -126,7 +126,8 @@ ROLE_FILTERS = {
     "BPP": [
         r".*-response.*\.json$",  # P2P trading/enrollment: *-response*.json (includes suffixes)
         r"^\d+_on_(discover|select|init|confirm|update|track|status|rating|support|cancel).*\.json$",  # EV charging: on_* folders
-        r"^on[-_](discover|select|init|confirm|update|track|status|rating|support|cancel).*\.json$"  # General pattern (on- or on_)
+        r"^on[-_](discover|select|init|confirm|update|track|status|rating|support|cancel).*\.json$",  # General pattern (on- or on_)
+        r"^publish-.*\.json$"  # BPP-initiated publish action to CDS
     ],
     "UtilityBPP": [
         r"^cascaded-.*\.json$"  # Cascaded requests/responses
@@ -145,6 +146,11 @@ BAP_ACTIONS = {
     "rating": "rating",
     "support": "support",
     "cancel": "cancel",
+}
+
+# BPP-initiated actions (not callbacks, but BPP initiating requests to CDS, etc.)
+BPP_INITIATED_ACTIONS = {
+    "publish": "publish",
 }
 
 # BPP response actions
@@ -217,8 +223,17 @@ def extract_action_from_filename(filename: str, role: str) -> Optional[str]:
                     return action
     
     elif role == "BPP":
-        # BPP only matches *-response*.json (not *-request*.json)
-        # Patterns: action-response, on-action-response, action-response-suffix
+        # BPP matches *-response*.json (not *-request*.json) AND publish-*.json
+        # Patterns: action-response, on-action-response, action-response-suffix, publish-*
+
+        # First check for BPP-initiated actions (like publish-catalog.json)
+        if name.startswith('publish-'):
+            match = re.match(r'^(publish)-', name, re.IGNORECASE)
+            if match:
+                action = match.group(1).lower()
+                if action in BPP_INITIATED_ACTIONS:
+                    return action
+
         if '-response' in name and '-request' not in name:
             # First try: on-action-response pattern (e.g., on-init-response-oauth2)
             match = re.match(r'^(cascaded-)?(on[-_])?([a-z]+)-response', name, re.IGNORECASE)
@@ -226,7 +241,7 @@ def extract_action_from_filename(filename: str, role: str) -> Optional[str]:
                 is_cascaded = match.group(1) is not None
                 has_on_prefix = match.group(2) is not None
                 action = match.group(3)
-                
+
                 if has_on_prefix:
                     # Already has on_ prefix (e.g., on-init-response -> on_init)
                     bpp_action = f"on_{action}"
@@ -546,7 +561,8 @@ def generate_collection(
         action_mapping = BAP_ACTIONS
         adapter_url_var = "bap_adapter_url"
     elif role == "BPP":
-        action_mapping = BPP_ACTIONS
+        # BPP uses both callback actions and BPP-initiated actions (like publish to CDS)
+        action_mapping = {**BPP_ACTIONS, **BPP_INITIATED_ACTIONS}
         adapter_url_var = "bpp_adapter_url"
     elif role == "UtilityBPP":
         action_mapping = BAP_ACTIONS  # UtilityBPP uses BAP actions
