@@ -43,18 +43,20 @@
               }
             },
             "beckn:itemAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/EnergyResource/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyResource/v0.2/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
               "deliveryMode": "GRID_INJECTION",
               "certificationStatus": "Carbon Offset Certified",
-              "meterId": "100200300",
-              "inverterId": "inv-12345",
+              "meterId": "der://meter/100200300",
               "availableQuantity": 30.5,
-              "productionWindow": {
-                "start": "2024-10-04T10:00:00Z",
-                "end": "2024-10-04T18:00:00Z"
-              },
+              "productionWindow": [
+                {
+                  "@type": "beckn:TimePeriod",
+                  "schema:startTime": "2024-10-04T10:00:00Z",
+                  "schema:endTime": "2024-10-04T18:00:00Z"
+                }
+              ],
               "sourceVerification": {
                 "verified": true,
                 "verificationDate": "2024-09-01T00:00:00Z",
@@ -83,18 +85,20 @@
               }
             },
             "beckn:itemAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/EnergyResource/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyResource/v0.2/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
               "deliveryMode": "GRID_INJECTION",
               "certificationStatus": "Standard Certified",
-              "meterId": "100200301",
-              "inverterId": "inv-12346",
+              "meterId": "der://meter/100200301",
               "availableQuantity": 50.0,
-              "productionWindow": {
-                "start": "2024-10-04T08:00:00Z",
-                "end": "2024-10-04T16:00:00Z"
-              },
+              "productionWindow": [
+                {
+                  "@type": "beckn:TimePeriod",
+                  "schema:startTime": "2024-10-04T08:00:00Z",
+                  "schema:endTime": "2024-10-04T16:00:00Z"
+                }
+              ],
               "sourceVerification": {
                 "verified": true,
                 "verificationDate": "2024-09-01T00:00:00Z",
@@ -126,7 +130,7 @@
               "schema:unitText": "kWh"
             },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/EnergyTradeOffer/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeOffer/v0.2/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
               "settlementType": "DAILY",
@@ -138,8 +142,9 @@
               "minimumQuantity": 1.0,
               "maximumQuantity": 100.0,
               "validityWindow": {
-                "start": "2024-10-04T00:00:00Z",
-                "end": "2024-10-04T23:59:59Z"
+                "@type": "beckn:TimePeriod",
+                "schema:startTime": "2024-10-04T00:00:00Z",
+                "schema:endTime": "2024-10-04T23:59:59Z"
               }
             }
           },
@@ -162,7 +167,7 @@
               "schema:unitText": "kWh"
             },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/EnergyTradeOffer/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeOffer/v0.2/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
               "settlementType": "WEEKLY",
@@ -174,8 +179,9 @@
               "minimumQuantity": 10.0,
               "maximumQuantity": 500.0,
               "validityWindow": {
-                "start": "2024-10-04T00:00:00Z",
-                "end": "2024-10-11T23:59:59Z"
+                "@type": "beckn:TimePeriod",
+                "schema:startTime": "2024-10-04T00:00:00Z",
+                "schema:endTime": "2024-10-11T23:59:59Z"
               }
             }
           }
