@@ -15,6 +15,6 @@ routingRules:
   - version: "2.0.0"
     targetType: "url"
     target:
-      url: "https://34.93.141.21.sslip.io/beckn/v2/catalog"
+      url: "https://34.93.141.21.sslip.io/beckn/catalog"
     endpoints:
       - publish
