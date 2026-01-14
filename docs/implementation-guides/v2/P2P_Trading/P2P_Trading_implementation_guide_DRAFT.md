@@ -74,7 +74,7 @@ This implementation guide provides comprehensive instructions for implementing P
 - [14. Examples](#14-examples)
   - [14.1. Complete Examples](#141-complete-examples)
   - [14.2. Example Scenarios](#142-example-scenarios)
-  - [14.3. Inter-energy retailer P2P trading](https://github.com/Beckn-One/DEG/blob/main/docs/implementation-guides/v2/P2P_Trading/Inter%20energy%20retailer%20P2P%20trading_draft.md)
+  - [14.3. Inter energy retailer P2P trading](#143-inter-energy-retailer-p2p-trading)
 - [15. Additional Resources](#15-additional-resources)
 - [16. Support](#16-support)
 
@@ -164,7 +164,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | CDS     | Catalog Discovery Service        | Enables discovery of energy services from BPPs in the network.                                                        |
 
 > Note:
-> This document does not detail the mapping between Beckn Protocol and OCPI. Please refer to [this](../../../docs/implementation-guides/v1-EOS/DEG00x_Mapping-OCPI-and-Beckn-Protocol-for-EV-Charging-Interoperability.md) document for the same.
+> This document does not detail the mapping between Beckn Protocol and OCPI. Please refer to [this](../../v1-EOS/DEG00x_Mapping-OCPI-and-Beckn-Protocol-for-EV-Charging-Interoperability.md) document for the same.
 > BPPs are NOT aggregators. Any CPO that has implemented a Beckn Protocol endpoint is a BPP. 
 > For all sense and purposes, CPOs are essentially BPPs and eMSPs are essentially BAPs.
 
@@ -612,7 +612,7 @@ To create an open network for energy trading requires all the producers, prosume
 
 The NP Registry serves as the root of addressability and trust for all network participants. It maintains comprehensive details such as the participant’s globally unique identifier (ID), network address (Beckn API URL), public key, operational domains, and assigned role (e.g., BAP, BPP, CDS). In addition to managing participant registration, authentication, authorization, and permission control, the Registry oversees participant verification, activation, and overall lifecycle management, ensuring that only validated and authorized entities can operate within the network.
 
-![](./assets/registry-arch.png)
+![](../assets/registry-arch.png)
 
 You can publish your registries at [DeDi.global](https://publish.dedi.global/).
 
@@ -2069,7 +2069,7 @@ All examples are available in:
   - `order-example.json` - EnergyTradeContract
   - `fulfillment-example.json` - EnergyTradeDelivery
 
-- **Transaction Flow Examples**: [`/examples/v2/P2P_Trading/`](../examples)
+- **Transaction Flow Examples**: [`/examples/v2/P2P_Trading/`](/examples/v2/P2P_Trading/)
   - [`discover-request.json`](/examples/v2/P2P_Trading/discover-request.json) / [`discover-response.json`](/examples/v2/P2P_Trading/discover-response.json)
   - [`select-request.json`](/examples/v2/P2P_Trading/select-request.json) / [`select-response.json`](/examples/v2/P2P_Trading/select-response.json)
   - [`init-request.json`](/examples/v2/P2P_Trading/init-request.json) / [`init-response.json`](/examples/v2/P2P_Trading/init-response.json)
@@ -2087,7 +2087,7 @@ All examples are available in:
 ---
 
 ## 14.3. Inter energy retailer P2P trading 
-This is a specific scenario of P2P trading where the participants come under differnet energy retailers and distribution utilities and engages in direct energy trade. Here, nuances of financial settlement, dispute resolution, energy accounting etc will have to be thought through without affecting ease of participation. More information can be found here [Inter-retailer P2P energy trading](https://github.com/Beckn-One/DEG/blob/main/docs/implementation-guides/v2/P2P_Trading/Inter%20energy%20retailer%20P2P%20trading_draft.md)
+This is a specific scenario of P2P trading where the participants come under differnet energy retailers and distribution utilities and engages in direct energy trade. Here, nuances of financial settlement, dispute resolution, energy accounting etc will have to be thought through without affecting ease of participation. More information can be found here [Inter-retailer P2P energy trading](https://github.com/Beckn-One/DEG/blob/main/docs/implementation-guides/v2/P2P_Trading/Inter_energy_retailer_P2P_trading_draft.md)
 
 # 15. Additional Resources
 
