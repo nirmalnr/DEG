@@ -124,7 +124,7 @@ ROLE_FILTERS = {
         r"^(discover|select|init|confirm|status|update|track|rating|support|cancel).*\.json$"  # General pattern
     ],
     "BPP": [
-        r".*-response.*\.json$",  # P2P trading/enrollment: *-response*.json (includes suffixes)
+        r"^(?!cascaded-).*-response.*\.json$",  # P2P trading/enrollment: *-response*.json (excludes cascaded-)
         r"^\d+_on_(discover|select|init|confirm|update|track|status|rating|support|cancel).*\.json$",  # EV charging: on_* folders
         r"^on[-_](discover|select|init|confirm|update|track|status|rating|support|cancel).*\.json$",  # General pattern (on- or on_)
         r"^publish-.*\.json$"  # BPP-initiated publish action to CDS
@@ -622,16 +622,14 @@ def generate_collection(
             )
             action_items.append(request)
         
-        # Create folder even if empty (for actions with no examples yet, like status)
-        folder = {
-            "name": action,
-            "item": action_items
-        }
-        collection_items.append(folder)
+        # Only create folder if it has requests
         if action_items:
+            folder = {
+                "name": action,
+                "item": action_items
+            }
+            collection_items.append(folder)
             print(f"  Created folder '{action}' with {len(action_items)} request(s)")
-        else:
-            print(f"  Created empty folder '{action}' (no examples found)")
     
     # Build collection
     collection = {

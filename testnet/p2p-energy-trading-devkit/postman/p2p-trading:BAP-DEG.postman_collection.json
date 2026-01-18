@@ -1,15 +1,11 @@
 {
   "info": {
-    "_postman_id": "05f2a6b7-53fe-4dc9-b283-2499c34a517b",
+    "_postman_id": "768bb52e-1fed-48e1-8bea-3ab2e89a26ce",
     "name": "p2p-trading:BAP-DEG",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Postman collection for Buyer Application Platform implementing p2p-trading APIs based on Beckn Protocol v2"
   },
   "item": [
-    {
-      "name": "cancel",
-      "item": []
-    },
     {
       "name": "confirm",
       "item": [
@@ -161,10 +157,6 @@
       ]
     },
     {
-      "name": "rating",
-      "item": []
-    },
-    {
       "name": "select",
       "item": [
         {
@@ -227,18 +219,6 @@
           "response": []
         }
       ]
-    },
-    {
-      "name": "support",
-      "item": []
-    },
-    {
-      "name": "track",
-      "item": []
-    },
-    {
-      "name": "update",
-      "item": []
     }
   ],
   "event": [
