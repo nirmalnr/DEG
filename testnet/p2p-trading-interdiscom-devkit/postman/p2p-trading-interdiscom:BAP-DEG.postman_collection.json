@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "d9983688-6b7e-4ebe-932d-a924e38153e6",
+    "_postman_id": "159b8e64-43ad-478d-814d-7e6e2ccce94a",
     "name": "p2p-trading-interdiscom:BAP-DEG",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Postman collection for Buyer Application Platform implementing p2p-trading-interdiscom APIs based on Beckn Protocol v2"
