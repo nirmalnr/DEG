@@ -68,9 +68,9 @@ modules:
           - id: degledgerrecorder
             config:
               ledgerHost: "https://34.93.166.38.sslip.io"
-              role: "SELLER"
+              role: "SELLER_DISCOM"
               enabled: "true"
-              asyncTimeout: "5000"
+              asyncTimeout: "30000"
       steps:
         - validateSign
         - addRoute
@@ -192,9 +192,9 @@ modules:
           - id: degledgerrecorder
             config:
               ledgerHost: "https://34.93.166.38.sslip.io"
-              role: "SELLER"
+              role: "SELLER_DISCOM"
               enabled: "true"
-              asyncTimeout: "5000"
+              asyncTimeout: "30000"
       steps:
         - validateSign
         - addRoute

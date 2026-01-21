@@ -53,6 +53,14 @@ func (r *DEGLedgerRecorder) Run(ctx *model.StepContext) error {
 
 	log.Infof(ctx, "DEGLedgerRecorder: processing on_confirm")
 
+	// DEBUG: Log the raw body received
+	log.Debugf(ctx, "DEGLedgerRecorder DEBUG: raw body length=%d", len(ctx.Body))
+	if len(ctx.Body) < 5000 {
+		log.Debugf(ctx, "DEGLedgerRecorder DEBUG: raw body:\n%s", string(ctx.Body))
+	} else {
+		log.Debugf(ctx, "DEGLedgerRecorder DEBUG: raw body (truncated):\n%s...", string(ctx.Body[:5000]))
+	}
+
 	// Parse the on_confirm payload
 	payload, err := ParseOnConfirm(ctx.Body)
 	if err != nil {
@@ -61,8 +69,19 @@ func (r *DEGLedgerRecorder) Run(ctx *model.StepContext) error {
 		return nil
 	}
 
+	// DEBUG: Log parsed payload details
+	log.Debugf(ctx, "DEGLedgerRecorder DEBUG: parsed context - transaction_id=%s, action=%s, bap_id=%s, bpp_id=%s",
+		payload.Context.TransactionID, payload.Context.Action, payload.Context.BapID, payload.Context.BppID)
+	log.Debugf(ctx, "DEGLedgerRecorder DEBUG: order items count=%d", len(payload.Message.Order.OrderItems))
+
 	// Map to ledger records (one per order item)
 	records := MapToLedgerRecords(payload, r.config.Role)
+
+	// DEBUG: Log mapped records
+	for i, rec := range records {
+		log.Debugf(ctx, "DEGLedgerRecorder DEBUG: record[%d] - transactionId=%s, orderItemId=%s, platformIdBuyer=%s, platformIdSeller=%s, discomIdBuyer=%s, discomIdSeller=%s",
+			i, rec.TransactionID, rec.OrderItemID, rec.PlatformIDBuyer, rec.PlatformIDSeller, rec.DiscomIDBuyer, rec.DiscomIDSeller)
+	}
 
 	if len(records) == 0 {
 		log.Warnf(ctx, "DEGLedgerRecorder: no order items found in on_confirm, skipping ledger recording")

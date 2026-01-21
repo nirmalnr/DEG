@@ -72,7 +72,8 @@ func (c *LedgerClient) PutRecord(ctx context.Context, record LedgerPutRequest) (
 
 // doPutRequest performs a single PUT request to the ledger API.
 func (c *LedgerClient) doPutRequest(ctx context.Context, record LedgerPutRequest) (*LedgerPutResponse, error) {
-	// Serialize the request body
+	// Serialize the request body (pretty for debug)
+	prettyBody, _ := json.MarshalIndent(record, "", "  ")
 	body, err := json.Marshal(record)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal ledger request: %w", err)
@@ -80,6 +81,15 @@ func (c *LedgerClient) doPutRequest(ctx context.Context, record LedgerPutRequest
 
 	// Create the HTTP request
 	url := fmt.Sprintf("%s/ledger/put", c.baseURL)
+
+	// DEBUG: Log the full request details
+	fmt.Println("")
+	fmt.Println("============ DEGLedgerRecorder DEBUG ============")
+	fmt.Println("Ledger API URL:", url)
+	fmt.Println("Request payload (pretty):")
+	fmt.Println(string(prettyBody))
+	fmt.Println("==================================================")
+
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(body))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
@@ -91,6 +101,7 @@ func (c *LedgerClient) doPutRequest(ctx context.Context, record LedgerPutRequest
 	// Execute the request
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
+		fmt.Printf("[DEGLedgerRecorder DEBUG] HTTP request failed: %v\n", err)
 		return nil, fmt.Errorf("ledger request failed: %w", err)
 	}
 	defer resp.Body.Close()
@@ -100,6 +111,10 @@ func (c *LedgerClient) doPutRequest(ctx context.Context, record LedgerPutRequest
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
+
+	// DEBUG: Log the response
+	fmt.Printf("[DEGLedgerRecorder DEBUG] Response status: %d\n", resp.StatusCode)
+	fmt.Printf("[DEGLedgerRecorder DEBUG] Response body:\n%s\n", string(respBody))
 
 	// Handle different status codes
 	switch resp.StatusCode {
