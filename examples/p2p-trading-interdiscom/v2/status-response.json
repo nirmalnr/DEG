@@ -22,7 +22,7 @@
       "beckn:buyer": {
         "beckn:id": "buyer-001",
         "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
-                "@type": "beckn:Buyer"
+        "@type": "beckn:Buyer"
       },
       "beckn:orderItems": [
         {
@@ -32,10 +32,35 @@
             "unitText": "kWh"
           },
           "beckn:orderItemAttributes": {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
-            "@type": "EnergyCustomer",
-            "meterId": "der://meter/98765456",
-            "utilityCustomerId": "UTIL-CUST-123456"
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyOrderItem/v0.1/context.jsonld",
+            "@type": "EnergyOrderItem",
+            "customerAttributes": {
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
+              "@type": "EnergyCustomer",
+              "meterId": "der://meter/98765456",
+              "utilityCustomerId": "UTIL-CUST-123456"
+            },
+            "fulfillmentAttributes": {
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeDelivery/v0.2/context.jsonld",
+              "@type": "EnergyTradeDelivery",
+              "deliveryStatus": "IN_PROGRESS",
+              "deliveryMode": "GRID_INJECTION",
+              "deliveredQuantity": 7.5,
+              "meterReadings": [
+                {
+                  "beckn:timeWindow": {
+                    "@type": "beckn:TimePeriod",
+                    "schema:startTime": "2024-10-04T06:00:00Z",
+                    "schema:endTime": "2024-10-04T09:00:00Z"
+                  },
+                  "deliveredEnergy": 0.0,
+                  "receivedEnergy": 7.5,
+                  "allocatedEnergy": 7.5,
+                  "unit": "kWh"
+                }
+              ],
+              "lastUpdated": "2024-10-04T15:00:00Z"
+            }
           },
           "beckn:acceptedOffer": {
             "beckn:id": "offer-morning-001",
@@ -80,10 +105,23 @@
             "unitText": "kWh"
           },
           "beckn:orderItemAttributes": {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
-            "@type": "EnergyCustomer",
-            "meterId": "der://meter/98765456",
-            "utilityCustomerId": "UTIL-CUST-123456"
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyOrderItem/v0.1/context.jsonld",
+            "@type": "EnergyOrderItem",
+            "customerAttributes": {
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
+              "@type": "EnergyCustomer",
+              "meterId": "der://meter/98765456",
+              "utilityCustomerId": "UTIL-CUST-123456"
+            },
+            "fulfillmentAttributes": {
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeDelivery/v0.2/context.jsonld",
+              "@type": "EnergyTradeDelivery",
+              "deliveryStatus": "PENDING",
+              "deliveryMode": "GRID_INJECTION",
+              "deliveredQuantity": 0.0,
+              "meterReadings": [],
+              "lastUpdated": "2024-10-04T15:00:00Z"
+            }
           },
           "beckn:acceptedOffer": {
             "beckn:id": "offer-afternoon-001",
@@ -121,65 +159,7 @@
             }
           }
         }
-      ],
-      "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
-        "@type": "beckn:Fulfillment",
-        "beckn:id": "fulfillment-energy-001",
-        "beckn:mode": "DELIVERY",
-        "beckn:deliveryAttributes": {
-          "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeDelivery/v0.2/context.jsonld",
-          "@type": "EnergyTradeDelivery",
-          "deliveryStatus": "IN_PROGRESS",
-          "deliveryMode": "GRID_INJECTION",
-          "deliveredQuantity": 9.8,
-          "deliveryStartTime": "2024-10-04T10:00:00Z",
-          "meterReadings": [
-            {
-              "timestamp": "2024-10-04T10:00:00Z",
-              "sourceReading": 1000.0,
-              "targetReading": 990.0,
-              "energyFlow": 10.0
-            },
-            {
-              "timestamp": "2024-10-04T12:00:00Z",
-              "sourceReading": 1000.5,
-              "targetReading": 990.3,
-              "energyFlow": 10.2
-            },
-            {
-              "timestamp": "2024-10-04T14:00:00Z",
-              "sourceReading": 1001.0,
-              "targetReading": 990.8,
-              "energyFlow": 10.2
-            }
-          ],
-          "telemetry": [
-            {
-              "eventTime": "2024-10-04T12:00:00Z",
-              "metrics": [
-                {
-                  "name": "ENERGY",
-                  "value": 5.8,
-                  "unitCode": "KWH"
-                },
-                {
-                  "name": "POWER",
-                  "value": 2.5,
-                  "unitCode": "KW"
-                },
-                {
-                  "name": "VOLTAGE",
-                  "value": 240.0,
-                  "unitCode": "VLT"
-                }
-              ]
-            }
-          ],
-          "settlementCycleId": "settle-2024-10-04-001",
-          "lastUpdated": "2024-10-04T15:30:00Z"
-        }
-      }
+      ]
     }
   }
 }
