@@ -2153,7 +2153,7 @@ This flow demonstrates the cascaded `/confirm` call from the P2P Trading BPP to 
           "beckn:orderItemAttributes": {
             "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyOrderItem/v0.1/context.jsonld",
             "@type": "EnergyOrderItem",
-            "customerAttributes": {
+            "providerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
               "@type": "EnergyCustomer",
               "meterId": "der://meter/98765456",
@@ -2226,7 +2226,7 @@ This flow demonstrates the cascaded `/confirm` call from the P2P Trading BPP to 
           "beckn:orderItemAttributes": {
             "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyOrderItem/v0.1/context.jsonld",
             "@type": "EnergyOrderItem",
-            "customerAttributes": {
+            "providerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
               "@type": "EnergyCustomer",
               "meterId": "der://meter/98765456",
@@ -2336,7 +2336,7 @@ When a trade has been curtailed (e.g., due to grid outage), the status response 
           "beckn:orderItemAttributes": {
             "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyOrderItem/v0.1/context.jsonld",
             "@type": "EnergyOrderItem",
-            "customerAttributes": {
+            "providerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
               "@type": "EnergyCustomer",
               "meterId": "der://meter/98765456",
@@ -2411,7 +2411,7 @@ When a trade has been curtailed (e.g., due to grid outage), the status response 
           "beckn:orderItemAttributes": {
             "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyOrderItem/v0.1/context.jsonld",
             "@type": "EnergyOrderItem",
-            "customerAttributes": {
+            "providerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
               "@type": "EnergyCustomer",
               "meterId": "der://meter/98765456",
@@ -2557,7 +2557,7 @@ sequenceDiagram
           "beckn:orderItemAttributes": {
             "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyOrderItem/v0.1/context.jsonld",
             "@type": "EnergyOrderItem",
-            "customerAttributes": {
+            "providerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyCustomer/v0.1/context.jsonld",
               "@type": "EnergyCustomer",
               "meterId": "der://meter/98765456",
