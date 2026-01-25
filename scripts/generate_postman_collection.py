@@ -115,7 +115,7 @@ DEVKIT_CONFIGS = {
         "structure": "flat"  # Flat file structure (like p2p-trading)
     },
     "p2p-trading-interdiscom": {
-        "domain": "beckn.one:deg:p2p-trading:2.0.0",
+        "domain": "beckn.one:deg:p2p-trading-interdiscom:2.0.0",
         "bap_id": "p2p-trading-sandbox1.com",
         "bap_uri": "http://onix-bap:8081/bap/receiver",
         "bpp_id": "p2p-trading-sandbox2.com",

@@ -10,7 +10,7 @@
     "bpp_id": "example-transmission-bpp.com",
     "bpp_uri": "https://api.example-transmission-bpp.com/pilot/bpp/",
     "ttl": "PT30S",
-    "domain": "beckn.one:deg:p2p-trading:2.0.0"
+    "domain": "beckn.one:deg:p2p-trading-interdiscom:2.0.0"
   },
   "message": {
     "order": {
