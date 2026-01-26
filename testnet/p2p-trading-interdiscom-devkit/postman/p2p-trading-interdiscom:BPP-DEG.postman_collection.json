@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "f0bc7bb5-baa8-46f4-93f5-4ffcfe7f6414",
+    "_postman_id": "1355f501-6e52-4f4d-8333-65d264413c88",
     "name": "p2p-trading-interdiscom:BPP-DEG",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Postman collection for Buyer Provider Platform implementing p2p-trading-interdiscom APIs based on Beckn Protocol v2"

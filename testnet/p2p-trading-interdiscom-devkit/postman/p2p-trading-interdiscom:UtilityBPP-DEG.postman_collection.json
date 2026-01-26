@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "43f90dff-64c1-42bf-a1cb-a63f34bfbbbf",
+    "_postman_id": "499b8413-6612-4378-8814-92c4eb341519",
     "name": "p2p-trading-interdiscom:UtilityBPP-DEG",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Postman collection for Utility BPP (Transmission/Grid Provider Platform) implementing p2p-trading-interdiscom APIs based on Beckn Protocol v2"
