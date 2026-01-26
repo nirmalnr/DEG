@@ -99,6 +99,31 @@
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-energy-001",
         "beckn:mode": "DELIVERY"
+      },
+      "beckn:payment": {
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@type": "beckn:Payment",
+        "beckn:id": "payment-cascaded-p2p-energy-001",
+        "beckn:amount": {
+          "currency": "USD",
+          "value": 2.25
+        },
+        "beckn:beneficiary": "BPP",
+        "beckn:paymentStatus": "INITIATED",
+        "beckn:paymentAttributes": {
+          "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/PaymentSettlement/v1/context.jsonld",
+          "@type": "PaymentSettlement",
+          "settlementAccounts": [
+            {
+              "beneficiaryId": "p2pTrading-bpp.com",
+              "accountHolderName": "P2P Trading Platform Pvt Ltd",
+              "accountNumber": "5555666677",
+              "ifscCode": "SBIN0001234",
+              "bankName": "State Bank of India",
+              "vpa": "p2p-trading@upi"
+            }
+          ]
+        }
       }
     }
   }
