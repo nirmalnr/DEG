@@ -22,6 +22,15 @@ type Config struct {
 
 	// RetryCount is the number of retries for failed ledger calls (0 = no retry)
 	RetryCount int
+
+	// APIKey is an optional API key for ledger service authentication
+	APIKey string
+
+	// AuthHeader is the header name for the API key (default: X-API-Key)
+	AuthHeader string
+
+	// DebugLogging enables verbose request/response logging
+	DebugLogging bool
 }
 
 // DefaultConfig returns a Config with sensible defaults.
@@ -32,6 +41,9 @@ func DefaultConfig() *Config {
 		Enabled:      true,
 		AsyncTimeout: 5 * time.Second,
 		RetryCount:   0,
+		APIKey:       "",
+		AuthHeader:   "X-API-Key",
+		DebugLogging: false,
 	}
 }
 
@@ -71,6 +83,18 @@ func ParseConfig(cfg map[string]string) (*Config, error) {
 			return nil, fmt.Errorf("invalid retryCount: %s", retry)
 		}
 		config.RetryCount = count
+	}
+
+	if apiKey, ok := cfg["apiKey"]; ok {
+		config.APIKey = apiKey
+	}
+
+	if authHeader, ok := cfg["authHeader"]; ok && authHeader != "" {
+		config.AuthHeader = authHeader
+	}
+
+	if debug, ok := cfg["debugLogging"]; ok {
+		config.DebugLogging = debug == "true" || debug == "1"
 	}
 
 	return config, nil

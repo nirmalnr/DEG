@@ -54,6 +54,9 @@ steps:
 | `enabled` | No | `true` | Enable/disable plugin |
 | `asyncTimeout` | No | `5000` | API call timeout (ms) |
 | `retryCount` | No | `0` | Retry count for failed calls |
+| `apiKey` | No | - | API key for ledger service authentication |
+| `authHeader` | No | `X-API-Key` | Header name for the API key |
+| `debugLogging` | No | `false` | Enable verbose request/response logging |
 
 ## Field Mapping
 

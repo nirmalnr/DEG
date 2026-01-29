@@ -25,7 +25,14 @@ func New(cfg map[string]string) (*DEGLedgerRecorder, error) {
 		return nil, err
 	}
 
-	client := NewLedgerClient(config.LedgerHost, config.AsyncTimeout, config.RetryCount)
+	client := NewLedgerClient(
+		config.LedgerHost,
+		config.AsyncTimeout,
+		config.RetryCount,
+		config.APIKey,
+		config.AuthHeader,
+		config.DebugLogging,
+	)
 
 	return &DEGLedgerRecorder{
 		config: config,
