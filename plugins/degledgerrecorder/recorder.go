@@ -2,6 +2,7 @@ package degledgerrecorder
 
 import (
 	"context"
+	"fmt"
 	"sync"
 
 	"github.com/beckn-one/beckn-onix/pkg/log"
@@ -25,6 +26,32 @@ func New(cfg map[string]string) (*DEGLedgerRecorder, error) {
 		return nil, err
 	}
 
+	// Create Beckn signer if signing is configured
+	var signer *BecknSigner
+	if config.SigningPrivateKey != "" && config.SubscriberID != "" && config.UniqueKeyID != "" {
+		signer, err = NewBecknSigner(
+			config.SubscriberID,
+			config.UniqueKeyID,
+			config.SigningPrivateKey,
+			config.SignatureValiditySeconds,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create Beckn signer: %w", err)
+		}
+
+		// Log signing configuration source
+		configSource := "explicit config"
+		if config.SigningFromEnv {
+			configSource = "environment variables (Vault/K8s secrets compatible)"
+		}
+		fmt.Printf("[DEGLedgerRecorder] Beckn signing enabled (subscriber_id=%s, key_id=%s, source=%s)\n",
+			config.SubscriberID, config.UniqueKeyID, configSource)
+	} else if config.APIKey != "" {
+		fmt.Printf("[DEGLedgerRecorder] Simple API key authentication enabled\n")
+	} else {
+		fmt.Printf("[DEGLedgerRecorder] WARNING: No authentication configured for ledger API calls\n")
+	}
+
 	client := NewLedgerClient(
 		config.LedgerHost,
 		config.AsyncTimeout,
@@ -32,6 +59,7 @@ func New(cfg map[string]string) (*DEGLedgerRecorder, error) {
 		config.APIKey,
 		config.AuthHeader,
 		config.DebugLogging,
+		signer,
 	)
 
 	return &DEGLedgerRecorder{

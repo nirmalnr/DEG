@@ -5,6 +5,7 @@ go 1.24.0
 require (
 	github.com/beckn-one/beckn-onix v0.0.0
 	github.com/google/uuid v1.6.0
+	golang.org/x/crypto v0.36.0
 )
 
 replace github.com/beckn-one/beckn-onix => ../../beckn-onix

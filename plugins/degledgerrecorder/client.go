@@ -21,6 +21,7 @@ type LedgerClient struct {
 	apiKey       string
 	authHeader   string
 	debugLogging bool
+	signer       *BecknSigner // Optional: for Beckn-style signature authentication
 }
 
 // LedgerPutResponse represents the response from the ledger PUT API.
@@ -60,7 +61,7 @@ type ResponseLog struct {
 }
 
 // NewLedgerClient creates a new LedgerClient instance.
-func NewLedgerClient(baseURL string, timeout time.Duration, retryCount int, apiKey, authHeader string, debugLogging bool) *LedgerClient {
+func NewLedgerClient(baseURL string, timeout time.Duration, retryCount int, apiKey, authHeader string, debugLogging bool, signer *BecknSigner) *LedgerClient {
 	return &LedgerClient{
 		baseURL: baseURL,
 		httpClient: &http.Client{
@@ -70,6 +71,7 @@ func NewLedgerClient(baseURL string, timeout time.Duration, retryCount int, apiK
 		apiKey:       apiKey,
 		authHeader:   authHeader,
 		debugLogging: debugLogging,
+		signer:       signer,
 	}
 }
 
@@ -130,8 +132,17 @@ func (c *LedgerClient) doPutRequest(ctx context.Context, record LedgerPutRequest
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("X-Request-ID", requestID)
 
-	// Add auth header if configured
-	if c.apiKey != "" {
+	// Add authentication header
+	// Priority: Beckn signature > API Key
+	if c.signer != nil && c.signer.IsConfigured() {
+		// Generate Beckn-style Authorization header with signature
+		authHeader, err := c.signer.GenerateAuthHeader(body)
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate Authorization header: %w", err)
+		}
+		req.Header.Set("Authorization", authHeader)
+	} else if c.apiKey != "" {
+		// Fall back to simple API key authentication
 		req.Header.Set(c.authHeader, c.apiKey)
 	}
 

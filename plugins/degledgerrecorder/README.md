@@ -14,6 +14,8 @@ This plugin intercepts `on_confirm` beckn protocol messages and creates correspo
 - Asynchronous operation (non-blocking)
 - Configurable role (BUYER, SELLER, BUYER_DISCOM, SELLER_DISCOM)
 - Idempotent requests using client reference
+- **Beckn-style signature authentication** (same as beckn-onix outgoing messages)
+- Detailed request/response logging for debugging
 
 ## Building
 
@@ -47,6 +49,8 @@ steps:
 
 ### Configuration Options
 
+#### Core Settings
+
 | Option | Required | Default | Description |
 |--------|----------|---------|-------------|
 | `ledgerHost` | Yes | - | Base URL of the DEG Ledger service |
@@ -54,9 +58,107 @@ steps:
 | `enabled` | No | `true` | Enable/disable plugin |
 | `asyncTimeout` | No | `5000` | API call timeout (ms) |
 | `retryCount` | No | `0` | Retry count for failed calls |
+| `debugLogging` | No | `false` | Enable verbose request/response logging |
+
+#### Authentication Options
+
+The plugin supports two authentication methods:
+
+**Option 1: Beckn-style Signature Authentication (Recommended)**
+
+Uses the same ed25519 + BLAKE2b-512 signing mechanism as beckn-onix for outgoing messages. This generates an `Authorization` header with a cryptographic signature.
+
+| Option | Required | Default | Description |
+|--------|----------|---------|-------------|
+| `signingPrivateKey` | Yes* | - | Base64-encoded ed25519 private key seed (same as beckn-onix) |
+| `subscriberId` | Yes* | - | Subscriber ID (e.g., `bap.example.org`) |
+| `uniqueKeyId` | Yes* | - | Unique key ID (e.g., `bap.example.org.k1`) |
+| `signatureValiditySeconds` | No | `30` | How long the signature is valid |
+
+*Required if using Beckn-style signing. If any signing field is set, all three must be set.
+
+**Option 2: Simple API Key Authentication**
+
+| Option | Required | Default | Description |
+|--------|----------|---------|-------------|
 | `apiKey` | No | - | API key for ledger service authentication |
 | `authHeader` | No | `X-API-Key` | Header name for the API key |
-| `debugLogging` | No | `false` | Enable verbose request/response logging |
+
+### Example 1: Zero-Config with Environment Variables (Recommended)
+
+If you already have environment variables set for `simplekeymanager`, the plugin will **automatically** use them - no additional config needed:
+
+```bash
+# Environment variables (same as beckn-onix simplekeymanager)
+export SIGNING_PRIVATE_KEY="<base64-encoded-ed25519-seed>"
+export SUBSCRIBER_ID="bap.example.org"
+export UNIQUE_KEY_ID="bap.example.org.k1"
+```
+
+```yaml
+# Plugin config - no signing config needed!
+plugins:
+  steps:
+    - id: degledgerrecorder
+      config:
+        ledgerHost: "https://ledger.example.org"
+        role: "BUYER"
+        # Signing config automatically loaded from env vars
+```
+
+This approach is **compatible with**:
+- **HashiCorp Vault** - secrets injected via Vault Agent
+- **Kubernetes Secrets** - mounted as env vars
+- **Docker Secrets** - exposed as env vars
+- **AWS Secrets Manager** - via ECS/Lambda env injection
+- **Azure Key Vault** - via env injection
+
+### Example 2: Explicit Configuration
+
+Override env vars with explicit config if needed:
+
+```yaml
+plugins:
+  steps:
+    - id: degledgerrecorder
+      config:
+        ledgerHost: "https://ledger.example.org"
+        role: "BUYER"
+        # Explicit signing config (overrides env vars)
+        signingPrivateKey: "${SIGNING_PRIVATE_KEY}"
+        subscriberId: "bap.example.org"
+        uniqueKeyId: "bap.example.org.k1"
+        signatureValiditySeconds: "30"
+        debugLogging: "true"
+```
+
+### Environment Variables Reference
+
+| Variable | Description |
+|----------|-------------|
+| `SIGNING_PRIVATE_KEY` | Base64-encoded ed25519 private key seed |
+| `SUBSCRIBER_ID` | Subscriber ID (e.g., `bap.example.org`) |
+| `UNIQUE_KEY_ID` | Unique key ID (e.g., `bap.example.org.k1`) |
+
+### Generated Authorization Header
+
+```
+Authorization: Signature keyId="bap.example.org|bap.example.org.k1|ed25519",algorithm="ed25519",created="1706547600",expires="1706547630",headers="(created) (expires) digest",signature="<base64_signature>"
+```
+
+### Vault Integration Example
+
+```hcl
+# Vault Agent template
+template {
+  contents = <<EOF
+SIGNING_PRIVATE_KEY={{ with secret "secret/beckn/signing" }}{{ .Data.data.private_key }}{{ end }}
+SUBSCRIBER_ID={{ with secret "secret/beckn/identity" }}{{ .Data.data.subscriber_id }}{{ end }}
+UNIQUE_KEY_ID={{ with secret "secret/beckn/identity" }}{{ .Data.data.key_id }}{{ end }}
+EOF
+  destination = "/app/.env"
+}
+```
 
 ## Field Mapping
 
@@ -91,6 +193,7 @@ plugins/degledgerrecorder/
 ├── config.go         # Configuration handling
 ├── mapper.go         # Payload mapping logic
 ├── client.go         # HTTP client for ledger API
+├── signer.go         # Beckn-style signature generation
 ├── recorder.go       # Main step implementation
 └── README.md
 ```
