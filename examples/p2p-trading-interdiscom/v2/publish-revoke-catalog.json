@@ -42,31 +42,20 @@
               "beckn:descriptor": {
                 "@type": "beckn:Descriptor",
                 "schema:name": "Solar Farm 001"
+              },
+              "beckn:providerAttributes": {
+                "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
+                "@type": "EnergyCustomer",
+                "meterId": "der://meter/100200300",
+                "utilityId": "TPDDL-DL",
+                "utilityCustomerId": "TPDDL-CUST-001"
               }
             },
             "beckn:itemAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyResource/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
-              "deliveryMode": "GRID_INJECTION",
-              "certificationStatus": "Carbon Offset Certified",
-              "meterId": "der://meter/100200300",
-              "availableQuantity": 30.5,
-              "productionWindow": [
-                {
-                  "@type": "beckn:TimePeriod",
-                  "schema:startTime": "2024-10-04T10:00:00Z",
-                  "schema:endTime": "2024-10-04T18:00:00Z"
-                }
-              ],
-              "sourceVerification": {
-                "verified": true,
-                "verificationDate": "2024-09-01T00:00:00Z",
-                "certificates": [
-                  "https://example.com/certs/solar-panel-cert.pdf"
-                ]
-              },
-              "productionAsynchronous": true
+              "meterId": "der://meter/100200300"
             }
           },
           {
@@ -85,31 +74,20 @@
               "beckn:descriptor": {
                 "@type": "beckn:Descriptor",
                 "schema:name": "Solar Farm 001"
+              },
+              "beckn:providerAttributes": {
+                "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
+                "@type": "EnergyCustomer",
+                "meterId": "der://meter/100200301",
+                "utilityId": "TPDDL-DL",
+                "utilityCustomerId": "TPDDL-CUST-001"
               }
             },
             "beckn:itemAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyResource/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
-              "deliveryMode": "GRID_INJECTION",
-              "certificationStatus": "Standard Certified",
-              "meterId": "der://meter/100200301",
-              "availableQuantity": 50.0,
-              "productionWindow": [
-                {
-                  "@type": "beckn:TimePeriod",
-                  "schema:startTime": "2024-10-04T08:00:00Z",
-                  "schema:endTime": "2024-10-04T16:00:00Z"
-                }
-              ],
-              "sourceVerification": {
-                "verified": true,
-                "verificationDate": "2024-09-01T00:00:00Z",
-                "certificates": [
-                  "https://example.com/certs/solar-panel-cert-2.pdf"
-                ]
-              },
-              "productionAsynchronous": true
+              "meterId": "der://meter/100200301"
             }
           }
         ],
@@ -130,29 +108,25 @@
               "@type": "schema:PriceSpecification",
               "schema:price": 0.15,
               "schema:priceCurrency": "USD",
-              "schema:unitText": "kWh"
+              "unitText": "kWh",
+              "applicableQuantity": {
+                "unitQuantity": 30.5,
+                "unitText": "kWh"
+              }
             },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeOffer/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
-              "settlementType": "DAILY",
-              "wheelingCharges": {
-                "amount": 2.5,
-                "currency": "USD",
-                "description": "PG&E Grid Services wheeling charge"
+              "deliveryWindow": {
+                "@type": "beckn:TimePeriod",
+                "schema:startTime": "2024-10-04T10:00:00Z",
+                "schema:endTime": "2024-10-04T18:00:00Z"
               },
-              "minimumQuantity": 1.0,
-              "maximumQuantity": 100.0,
               "validityWindow": {
                 "@type": "beckn:TimePeriod",
                 "schema:startTime": "2024-10-04T00:00:00Z",
                 "schema:endTime": "2024-10-04T23:59:59Z"
-              },
-              "beckn:maxQuantity": {
-                "unitQuantity": 30.5,
-                "unitText": "kWh",
-                "unitCode": "KWH"
               }
             }
           },
@@ -172,29 +146,25 @@
               "@type": "schema:PriceSpecification",
               "schema:price": 0.12,
               "schema:priceCurrency": "USD",
-              "schema:unitText": "kWh"
+              "unitText": "kWh",
+              "applicableQuantity": {
+                "unitQuantity": 50.0,
+                "unitText": "kWh"
+              }
             },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeOffer/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
-              "settlementType": "WEEKLY",
-              "wheelingCharges": {
-                "amount": 2.0,
-                "currency": "USD",
-                "description": "PG&E Grid Services wheeling charge"
+              "deliveryWindow": {
+                "@type": "beckn:TimePeriod",
+                "schema:startTime": "2024-10-04T08:00:00Z",
+                "schema:endTime": "2024-10-04T16:00:00Z"
               },
-              "minimumQuantity": 10.0,
-              "maximumQuantity": 500.0,
               "validityWindow": {
                 "@type": "beckn:TimePeriod",
                 "schema:startTime": "2024-10-04T00:00:00Z",
                 "schema:endTime": "2024-10-11T23:59:59Z"
-              },
-              "beckn:maxQuantity": {
-                "unitQuantity": 50.0,
-                "unitText": "kWh",
-                "unitCode": "KWH"
               }
             }
           }

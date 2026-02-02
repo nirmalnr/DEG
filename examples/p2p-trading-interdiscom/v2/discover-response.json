@@ -40,31 +40,20 @@
               "beckn:descriptor": {
                 "@type": "beckn:Descriptor",
                 "schema:name": "Solar Farm 001"
+              },
+              "beckn:providerAttributes": {
+                "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
+                "@type": "EnergyCustomer",
+                "meterId": "der://meter/100200300",
+                "utilityId": "TPDDL-DL",
+                "utilityCustomerId": "TPDDL-CUST-001"
               }
             },
             "beckn:itemAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyResource/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
-              "deliveryMode": "GRID_INJECTION",
-              "certificationStatus": "Carbon Offset Certified",
-              "meterId": "der://meter/100200300",
-              "availableQuantity": 30.5,
-              "productionWindow": [
-                {
-                  "@type": "beckn:TimePeriod",
-                  "schema:startTime": "2026-01-09T10:00:00Z",
-                  "schema:endTime": "2026-01-09T18:00:00Z"
-                }
-              ],
-              "sourceVerification": {
-                "verified": true,
-                "verificationDate": "2024-09-01T00:00:00Z",
-                "certificates": [
-                  "https://example.com/certs/solar-panel-cert.pdf"
-                ]
-              },
-              "productionAsynchronous": true
+              "meterId": "der://meter/100200300"
             }
           }
         ],
@@ -81,38 +70,29 @@
             "beckn:items": [
               "energy-resource-solar-001"
             ],
+            "beckn:price": {
+              "@type": "schema:PriceSpecification",
+              "schema:price": 0.15,
+              "schema:priceCurrency": "USD",
+              "unitText": "kWh",
+              "applicableQuantity": {
+                "unitQuantity": 20.0,
+                "unitText": "kWh"
+              }
+            },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeOffer/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
-              "settlementType": "DAILY",
-              "sourceMeterId": "der://meter/100200300",
-              "wheelingCharges": {
-                "amount": 2.5,
-                "currency": "USD",
-                "description": "PG&E Grid Services wheeling charge"
-              },
-              "minimumQuantity": 1.0,
-              "maximumQuantity": 100.0,
-              "validityWindow": {
-                "@type": "beckn:TimePeriod",
-                "schema:startTime": "2026-01-09T00:00:00Z",
-                "schema:endTime": "2026-01-09T23:59:59Z"
-              },
-              "beckn:price": {
-                "value": 0.15,
-                "currency": "USD",
-                "unitText": "kWh"
-              },
-              "beckn:maxQuantity": {
-                "unitQuantity": 20.0,
-                "unitText": "kWh",
-                "unitCode": "KWH"
-              },
-              "beckn:timeWindow": {
+              "deliveryWindow": {
                 "@type": "beckn:TimePeriod",
                 "schema:startTime": "2026-01-09T06:00:00Z",
                 "schema:endTime": "2026-01-09T12:00:00Z"
+              },
+              "validityWindow": {
+                "@type": "beckn:TimePeriod",
+                "schema:startTime": "2026-01-09T00:00:00Z",
+                "schema:endTime": "2026-01-09T05:00:00Z"
               }
             }
           },
@@ -128,38 +108,29 @@
             "beckn:items": [
               "energy-resource-solar-001"
             ],
+            "beckn:price": {
+              "@type": "schema:PriceSpecification",
+              "schema:price": 0.18,
+              "schema:priceCurrency": "USD",
+              "unitText": "kWh",
+              "applicableQuantity": {
+                "unitQuantity": 15.0,
+                "unitText": "kWh"
+              }
+            },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/p2p-trading/schema/EnergyTradeOffer/v0.2/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
-              "settlementType": "DAILY",
-              "sourceMeterId": "der://meter/100200300",
-              "wheelingCharges": {
-                "amount": 2.5,
-                "currency": "USD",
-                "description": "PG&E Grid Services wheeling charge"
-              },
-              "minimumQuantity": 1.0,
-              "maximumQuantity": 100.0,
-              "validityWindow": {
-                "@type": "beckn:TimePeriod",
-                "schema:startTime": "2026-01-09T00:00:00Z",
-                "schema:endTime": "2026-01-09T23:59:59Z"
-              },
-              "beckn:price": {
-                "value": 0.18,
-                "currency": "USD",
-                "unitText": "kWh"
-              },
-              "beckn:maxQuantity": {
-                "unitQuantity": 15.0,
-                "unitText": "kWh",
-                "unitCode": "KWH"
-              },
-              "beckn:timeWindow": {
+              "deliveryWindow": {
                 "@type": "beckn:TimePeriod",
                 "schema:startTime": "2026-01-09T12:00:00Z",
                 "schema:endTime": "2026-01-09T18:00:00Z"
+              },
+              "validityWindow": {
+                "@type": "beckn:TimePeriod",
+                "schema:startTime": "2026-01-09T00:00:00Z",
+                "schema:endTime": "2026-01-09T11:00:00Z"
               }
             }
           }
