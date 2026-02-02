@@ -53,25 +53,7 @@
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
-              "deliveryMode": "GRID_INJECTION",
-              "certificationStatus": "Carbon Offset Certified",
-              "meterId": "der://meter/100200300",
-              "availableQuantity": 30.5,
-              "productionWindow": [
-                {
-                  "@type": "beckn:TimePeriod",
-                  "schema:startTime": "2026-01-09T10:00:00Z",
-                  "schema:endTime": "2026-01-09T18:00:00Z"
-                }
-              ],
-              "sourceVerification": {
-                "verified": true,
-                "verificationDate": "2024-09-01T00:00:00Z",
-                "certificates": [
-                  "https://example.com/certs/solar-panel-cert.pdf"
-                ]
-              },
-              "productionAsynchronous": true
+              "meterId": "der://meter/100200300"
             }
           }
         ],
