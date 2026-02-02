@@ -10,7 +10,7 @@
     "bpp_id": "bpp.energy-provider.com",
     "bpp_uri": "https://bpp.energy-provider.com",
     "ttl": "PT30S",
-    "domain": "deg:p2p-trading",
+    "domain": "beckn.one:deg:p2p-trading-interdiscom:2.0.0",
     "location": {
       "city": {
         "code": "BLR",
@@ -22,7 +22,7 @@
       }
     },
     "schema_context": [
-      "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld"
+      "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld"
     ]
   },
   "message": {

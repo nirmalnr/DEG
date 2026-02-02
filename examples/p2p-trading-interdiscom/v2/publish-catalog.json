@@ -10,7 +10,7 @@
     "bpp_id": "bpp.energy-provider.com",
     "bpp_uri": "https://bpp.energy-provider.com",
     "ttl": "PT30S",
-    "domain": "deg:p2p-trading"
+    "domain": "beckn.one:deg:p2p-trading-interdiscom:2.0.0"
   },
   "message": {
     "catalogs": [
@@ -44,7 +44,7 @@
                 "schema:name": "Solar Farm 001"
               },
               "beckn:providerAttributes": {
-                "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
+                "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
                 "@type": "EnergyCustomer",
                 "meterId": "der://meter/100200300",
                 "utilityId": "TPDDL-DL",
@@ -52,7 +52,7 @@
               }
             },
             "beckn:itemAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
               "meterId": "der://meter/100200300"
@@ -77,7 +77,7 @@
                 "schema:name": "Solar Farm 001"
               },
               "beckn:providerAttributes": {
-                "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
+                "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
                 "@type": "EnergyCustomer",
                 "meterId": "der://meter/100200301",
                 "utilityId": "TPDDL-DL",
@@ -85,7 +85,7 @@
               }
             },
             "beckn:itemAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyResource",
               "sourceType": "SOLAR",
               "meterId": "der://meter/100200301"
@@ -116,7 +116,7 @@
               }
             },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
               "deliveryWindow": {
@@ -154,7 +154,7 @@
               }
             },
             "beckn:offerAttributes": {
-              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
+              "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
               "deliveryWindow": {
