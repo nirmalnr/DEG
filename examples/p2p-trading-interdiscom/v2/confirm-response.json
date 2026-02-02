@@ -33,12 +33,13 @@
       },
       "beckn:orderAttributes": {
         "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
-        "@type": "EnergyTradeOrderInterUtility",
+        "@type": "EnergyTradeOrder",
         "bap_id": "bap.energy-consumer.com",
         "bpp_id": "bpp.energy-provider.com",
-        "total_quantity": 25.0,
-        "utilityIdBuyer": "BESCOM-KA",
-        "utilityIdSeller": "TPDDL-DL"
+        "total_quantity": {
+          "unitQuantity": 25.0,
+          "unitText": "kWh"
+        }
       },
       "beckn:orderItems": [
         {
@@ -70,20 +71,20 @@
             "beckn:items": [
               "energy-resource-solar-001"
             ],
+            "beckn:price": {
+              "@type": "schema:PriceSpecification",
+              "schema:price": 0.15,
+              "schema:priceCurrency": "USD",
+              "unitText": "kWh",
+              "applicableQuantity": {
+                "unitQuantity": 20.0,
+                "unitText": "kWh"
+              }
+            },
             "beckn:offerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
-              "beckn:price": {
-                "@type": "schema:PriceSpecification",
-                "schema:price": 0.15,
-                "schema:priceCurrency": "USD",
-                "unitText": "kWh",
-                "applicableQuantity": {
-                  "unitQuantity": 20.0,
-                  "unitText": "kWh"
-                }
-              },
               "deliveryWindow": {
                 "@type": "beckn:TimePeriod",
                 "schema:startTime": "2026-01-09T06:00:00Z",
@@ -126,20 +127,20 @@
             "beckn:items": [
               "energy-resource-solar-001"
             ],
+            "beckn:price": {
+              "@type": "schema:PriceSpecification",
+              "schema:price": 0.18,
+              "schema:priceCurrency": "USD",
+              "unitText": "kWh",
+              "applicableQuantity": {
+                "unitQuantity": 15.0,
+                "unitText": "kWh"
+              }
+            },
             "beckn:offerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/issue-80-fix-p2ptrading-schema/schema/EnergyTrade/v0.3/context.jsonld",
               "@type": "EnergyTradeOffer",
               "pricingModel": "PER_KWH",
-              "beckn:price": {
-                "@type": "schema:PriceSpecification",
-                "schema:price": 0.18,
-                "schema:priceCurrency": "USD",
-                "unitText": "kWh",
-                "applicableQuantity": {
-                  "unitQuantity": 15.0,
-                  "unitText": "kWh"
-                }
-              },
               "deliveryWindow": {
                 "@type": "beckn:TimePeriod",
                 "schema:startTime": "2026-01-09T12:00:00Z",
