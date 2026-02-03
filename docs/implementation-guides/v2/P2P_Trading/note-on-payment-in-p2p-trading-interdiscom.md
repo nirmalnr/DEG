@@ -1,36 +1,39 @@
-# 1. Payment Design for P2P Energy Trading (Inter-Discom)
-- [1. Payment Design for P2P Energy Trading (Inter-Discom)](#1-payment-design-for-p2p-energy-trading-inter-discom)
-  - [1.1. Overview](#11-overview)
-  - [1.2. Design Principles](#12-design-principles)
-    - [1.2.1. Peer-to-Peer Transparency](#121-peer-to-peer-transparency)
-    - [1.2.2. Bill Component Transparency](#122-bill-component-transparency)
-    - [1.2.3. Settlement Flow](#123-settlement-flow)
-  - [1.3. Sequence Diagram](#13-sequence-diagram)
-  - [1.4. Payment Status Lifecycle](#14-payment-status-lifecycle)
-  - [1.5. Bill Components](#15-bill-components)
-  - [1.6. Message Flow Examples](#16-message-flow-examples)
-    - [1.6.1. on\_select: Bill Breakdown + Accepted Payment Methods](#161-on_select-bill-breakdown--accepted-payment-methods)
-    - [1.6.2. on\_init: Payment Terms Confirmation](#162-on_init-payment-terms-confirmation)
-    - [1.6.3. confirm: Payment Authorization](#163-confirm-payment-authorization)
-    - [1.6.4. on\_update: Final Invoice (After Allocation)](#164-on_update-final-invoice-after-allocation)
-    - [1.6.5. on\_update: Partial Delivery (Curtailment)](#165-on_update-partial-delivery-curtailment)
-    - [1.6.6. on\_update: Settlement Complete](#166-on_update-settlement-complete)
-    - [1.6.7. on\_status: Trade Completed](#167-on_status-trade-completed)
-  - [1.7. Key Design Decisions](#17-key-design-decisions)
-    - [1.7.1. Why Platform-to-Platform Settlement?](#171-why-platform-to-platform-settlement)
-    - [1.7.2. Customer Agency](#172-customer-agency)
-    - [1.7.3. Discom's Role](#173-discoms-role)
-  - [1.8. Implementation Notes](#18-implementation-notes)
-    - [1.8.1. For Buyer Platforms (BAP)](#181-for-buyer-platforms-bap)
-    - [1.8.2. For Seller Platforms (BPP)](#182-for-seller-platforms-bpp)
+# Payment Design for P2P Energy Trading (Inter-Discom) <!-- omit from toc -->
 
-## 1.1. Overview
+Version 0.1 (Non-Normative)
+
+## Table of contents <!-- omit from toc -->
+- [1. Overview](#1-overview)
+- [2. Design Principles](#2-design-principles)
+  - [2.1. Peer-to-Peer Transparency](#21-peer-to-peer-transparency)
+  - [2.2. Bill Component Transparency](#22-bill-component-transparency)
+  - [2.3. Settlement Flow](#23-settlement-flow)
+- [3. Sequence Diagram](#3-sequence-diagram)
+- [4. Payment Status Lifecycle](#4-payment-status-lifecycle)
+- [5. Bill Components](#5-bill-components)
+- [6. Message Flow Examples](#6-message-flow-examples)
+  - [6.1. on\_select: Bill Breakdown + Accepted Payment Methods](#61-on_select-bill-breakdown--accepted-payment-methods)
+  - [6.2. on\_init: Payment Terms Confirmation](#62-on_init-payment-terms-confirmation)
+  - [6.3. confirm: Payment Authorization](#63-confirm-payment-authorization)
+  - [6.4. on\_update: Final Invoice (After Allocation)](#64-on_update-final-invoice-after-allocation)
+  - [6.5. on\_update: Partial Delivery (Curtailment)](#65-on_update-partial-delivery-curtailment)
+  - [6.6. on\_update: Settlement Complete](#66-on_update-settlement-complete)
+  - [6.7. on\_status: Trade Completed](#67-on_status-trade-completed)
+- [7. Key Design Decisions](#7-key-design-decisions)
+  - [7.1. Why Platform-to-Platform Settlement?](#71-why-platform-to-platform-settlement)
+  - [7.2. Customer Agency](#72-customer-agency)
+  - [7.3. Discom's Role](#73-discoms-role)
+- [8. Implementation Notes](#8-implementation-notes)
+  - [8.1. For Buyer Platforms (BAP)](#81-for-buyer-platforms-bap)
+  - [8.2. For Seller Platforms (BPP)](#82-for-seller-platforms-bpp)
+
+## 1. Overview
 
 This note documents the payment flow design for peer-to-peer energy trading across distribution companies (discoms). While trading platforms act as intermediaries facilitating transactions, the fundamental nature remains **peer-to-peer**: energy flows from one prosumer to another consumer, and payment should reflect this direct relationship.
 
-## 1.2. Design Principles
+## 2. Design Principles
 
-### 1.2.1. Peer-to-Peer Transparency
+### 2.1. Peer-to-Peer Transparency
 
 Even though payments flow through platforms (BAP → BPP), the underlying transaction is between two individuals:
 - **Seller (Prosumer)**: Generates excess energy and sells it
@@ -41,7 +44,7 @@ Platforms act with **delegated agency** on behalf of their customers. This means
 - All fees (both buyer and seller platform fees) must be disclosed upfront
 - Customers retain the **right to pay sellers directly** in future implementations
 
-### 1.2.2. Bill Component Transparency
+### 2.2. Bill Component Transparency
 
 At the selection stage (`on_select`), buyers must see the complete cost breakdown:
 - **Energy value**: The actual cost of energy (quantity × price per unit)
@@ -50,7 +53,7 @@ At the selection stage (`on_select`), buyers must see the complete cost breakdow
 
 This ensures informed consent before the trade is confirmed.
 
-### 1.2.3. Settlement Flow
+### 2.3. Settlement Flow
 
 The payment settlement follows a clear progression:
 1. **Authorization**: Buyer platform verifies wallet balance or credit line covers total amount
@@ -58,7 +61,7 @@ The payment settlement follows a clear progression:
 3. **Final Invoice**: Seller platform raises invoice with receiving account details
 4. **Settlement**: Money moves from buyer platform to seller platform, then to seller
 
-## 1.3. Sequence Diagram
+## 3. Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -100,7 +103,7 @@ sequenceDiagram
     BuyerPlatform-->>Buyer: Trade complete notification
 ```
 
-## 1.4. Payment Status Lifecycle
+## 4. Payment Status Lifecycle
 
 | Status | When | Meaning |
 |--------|------|---------|
@@ -110,7 +113,7 @@ sequenceDiagram
 | `ADJUSTED` | on_update (curtailment) | Amount changed due to partial delivery |
 | `SETTLED` | on_update (complete) | Money transferred to all parties |
 
-## 1.5. Bill Components
+## 5. Bill Components
 
 The `beckn:orderValue` object provides full transparency:
 
@@ -138,9 +141,9 @@ The `beckn:orderValue` object provides full transparency:
 }
 ```
 
-## 1.6. Message Flow Examples
+## 6. Message Flow Examples
 
-### 1.6.1. on_select: Bill Breakdown + Accepted Payment Methods
+### 6.1. on_select: Bill Breakdown + Accepted Payment Methods
 
 At selection, the seller platform returns the complete bill breakdown and accepted payment methods, enabling the buyer to make an informed decision.
 
@@ -341,7 +344,7 @@ At selection, the seller platform returns the complete bill breakdown and accept
 ```
 </details>
 
-### 1.6.2. on_init: Payment Terms Confirmation
+### 6.2. on_init: Payment Terms Confirmation
 
 The initialization response confirms both settlement accounts and accepted payment methods.
 
@@ -576,7 +579,7 @@ The initialization response confirms both settlement accounts and accepted payme
 ```
 </details>
 
-### 1.6.3. confirm: Payment Authorization
+### 6.3. confirm: Payment Authorization
 
 The confirmation request contains minimal payment info - just the authorized amount. Full settlement details were already exchanged.
 
@@ -764,7 +767,7 @@ The confirmation request contains minimal payment info - just the authorized amo
 ```
 </details>
 
-### 1.6.4. on_update: Final Invoice (After Allocation)
+### 6.4. on_update: Final Invoice (After Allocation)
 
 After energy allocation is complete, the seller platform raises the final invoice with:
 - Final amounts based on actual delivered quantities
@@ -1022,7 +1025,7 @@ After energy allocation is complete, the seller platform raises the final invoic
 ```
 </details>
 
-### 1.6.5. on_update: Partial Delivery (Curtailment)
+### 6.5. on_update: Partial Delivery (Curtailment)
 
 If delivery is curtailed (e.g., grid outage), the payment amount is adjusted to reflect actual delivered energy.
 
@@ -1186,7 +1189,7 @@ If delivery is curtailed (e.g., grid outage), the payment amount is adjusted to 
 ```
 </details>
 
-### 1.6.6. on_update: Settlement Complete
+### 6.6. on_update: Settlement Complete
 
 Once money has moved from buyer platform to seller platform (tracked via URL), the seller platform marks the trade complete.
 
@@ -1309,7 +1312,7 @@ Once money has moved from buyer platform to seller platform (tracked via URL), t
 ```
 </details>
 
-### 1.6.7. on_status: Trade Completed
+### 6.7. on_status: Trade Completed
 
 Final status shows the order and payment as complete.
 
@@ -1571,9 +1574,9 @@ Final status shows the order and payment as complete.
 ```
 </details>
 
-## 1.7. Key Design Decisions
+## 7. Key Design Decisions
 
-### 1.7.1. Why Platform-to-Platform Settlement?
+### 7.1. Why Platform-to-Platform Settlement?
 
 While the trade is peer-to-peer, platform-to-platform settlement provides:
 1. **Credit management**: Platforms can extend goodwill credit to customers
@@ -1581,7 +1584,7 @@ While the trade is peer-to-peer, platform-to-platform settlement provides:
 3. **Dispute resolution**: Platforms can mediate if issues arise
 4. **Regulatory compliance**: Platforms handle KYC/AML requirements
 
-### 1.7.2. Customer Agency
+### 7.2. Customer Agency
 
 Despite platform intermediation:
 - **Full visibility**: All fees and amounts are disclosed in every message
@@ -1589,23 +1592,23 @@ Despite platform intermediation:
 - **Future optionality**: The protocol supports direct peer-to-peer payment in future versions
 - **Choice of platform**: Customers can choose platforms based on fees and services
 
-### 1.7.3. Discom's Role
+### 7.3. Discom's Role
 
 Discoms (distribution companies) are privy to:
 - **Trade volumes only**: For grid management and wheeling fee calculation
 - **Wheeling fees**: Charged separately in monthly utility bills
 - **No double billing**: Peer-traded energy is excluded from regular consumption billing
 
-## 1.8. Implementation Notes
+## 8. Implementation Notes
 
-### 1.8.1. For Buyer Platforms (BAP)
+### 8.1. For Buyer Platforms (BAP)
 
 1. **Before confirm**: Verify `wallet_balance + goodwill_credit >= total_amount`
 2. **On final invoice**: Validate bill components match original on_select
 3. **Settlement**: Deduct buyer fee, transfer remainder to seller platform
 4. **Tracking**: Monitor payment URL until SETTLED status received
 
-### 1.8.2. For Seller Platforms (BPP)
+### 8.2. For Seller Platforms (BPP)
 
 1. **On select**: Return complete bill breakdown with all fees
 2. **On init**: Provide settlement account details
