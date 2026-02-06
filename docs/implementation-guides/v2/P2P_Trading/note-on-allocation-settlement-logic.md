@@ -22,12 +22,13 @@
   - [7. Ledger API Integration](#7-ledger-api-integration)
     - [Allocation Workflow](#allocation-workflow)
     - [Step 1: Platform Creates Trade Record](#step-1-platform-creates-trade-record)
-    - [Step 2: Discoms Record Actuals (Rounds 1 \& 2)](#step-2-discoms-record-actuals-rounds-1--2)
-    - [Step 3: Settlement Engine Computes Min-of-Two (Round 3)](#step-3-settlement-engine-computes-min-of-two-round-3)
+    - [Step 2: Discoms Record Allocations (Rounds 1, 2 \& 3)](#step-2-discoms-record-allocations-rounds-1-2--3)
+    - [Step 3: Platforms Read Final Settlement](#step-3-platforms-read-final-settlement)
     - [Step 4: Billing Calculation from Settlement](#step-4-billing-calculation-from-settlement)
     - [Error Handling Patterns](#error-handling-patterns)
     - [Sequence Diagram](#sequence-diagram)
   - [8. Summary](#8-summary)
+  - [9. Consensus Rules for AI Summit](#9-consensus-rules-for-ai-summit)
 - [Appendix A: Deviation-Based Settlement (Alternative)](#appendix-a-deviation-based-settlement-alternative)
   - [Overview](#overview)
   - [Settlement Formulas](#settlement-formulas)
@@ -216,13 +217,17 @@ Allocations: T1 = 10 × 0.75 = 7.5 kWh, T3 = 10 × 0.75 = 7.5 kWh
 
 ### The 3-Round Settlement Flow
 
-1. **Round 1 - Seller utilities allocate:** Each seller utility computes pro-rata allocations based on seller's production. Records allocated pushed energy to ledger.
+1. **Round 1 - Seller utilities allocate (initial):** Each seller utility computes pro-rata allocations based on seller's production. Records allocated pushed energy to ledger. Marks `statusSellerDiscom` as **PENDING**.
 
-2. **Round 2 - Buyer utilities allocate:** Each buyer utility computes pro-rata allocations based on buyer's consumption. Records allocated pulled energy to ledger.
+2. **Round 2 - Buyer utilities allocate:** Each buyer utility queries seller allocations from Round 1, computes pro-rata allocations based on buyer's consumption, and caps each allocation at the seller's Round 1 allocation. Records allocated pulled energy to ledger. Marks `statusBuyerDiscom` as **COMPLETED**.
 
-3. **Round 3 - Settlement:** Settlement engine queries ledger, applies min-of-two rule: $\text{settle}_k = \min(a^B_k, a^S_k)$
+3. **Round 3 - Seller utilities re-allocate (final):** Each seller utility queries buyer allocations from Round 2, re-computes allocations capped at buyer's Round 2 values. This allows sellers to redistribute freed-up energy from trades where buyers took less than offered. Records updated allocations to ledger. Marks `statusSellerDiscom` as **COMPLETED**.
 
-**Why seller first?** Production (supply) is typically the scarcer constraint. However, with simple pro-rata, each utility allocates independently—the min-of-two at settlement handles any mismatch.
+After Round 3, both allocations converge: the seller's final allocation equals the buyer's allocation for each trade. The min-of-two rule $\text{settle}_k = \min(a^B_k, a^S_k)$ becomes a verification rather than a computation, since both values should agree.
+
+**Why seller first?** Production (supply) is typically the scarcer constraint. The seller's initial allocation sets the upper bound, the buyer responds within that bound, and the seller finalizes. This 3-round convergence ensures both parties explicitly agree on settled quantities.
+
+**Why 3 rounds instead of 2?** When a seller has multiple trades and some buyers consume less than offered, Round 3 allows the seller's utility to redistribute the surplus to other trades where the buyer could accept more. Without Round 3, this surplus would be stranded.
 
 ### Settlement Flow Diagram
 
@@ -294,13 +299,15 @@ The DEG Ledger Service provides an immutable, multi-party view of trade lifecycl
 ### Allocation Workflow
 
 ```
-Timeline:
-  T+0h   Delivery period ends
-  T+1h   Meter readings available
-  T+2h   Round 1: Seller discom allocates (ACTUAL_PUSHED)
-  T+4h   Round 2: Buyer discom allocates (ACTUAL_PULLED)
-  T+6h   Round 3: Settlement engine computes min-of-two
-  T+8h   Settlement complete, billing triggered
+Timeline (generic — see "Consensus Rules for AI Summit" for specific time gates):
+  Delivery period ends
+  Meter readings become available to discoms
+  Round 1: Seller discom allocates (ACTUAL_PUSHED), statusSellerDiscom = PENDING
+  Round 2: Buyer discom reads seller allocations, allocates (ACTUAL_PULLED),
+           statusBuyerDiscom = COMPLETED
+  Round 3: Seller discom reads buyer allocations, re-allocates (ACTUAL_PUSHED),
+           statusSellerDiscom = COMPLETED
+  Trading platforms read final settled status
 ```
 
 ### Step 1: Platform Creates Trade Record
@@ -362,11 +369,12 @@ def create_trade_record(trade: Trade) -> LedgerWriteResponse:
         raise LedgerAPIError(response.status_code, response.json())
 ```
 
-### Step 2: Discoms Record Actuals (Rounds 1 & 2)
+### Step 2: Discoms Record Allocations (Rounds 1, 2 & 3)
 
-After the delivery period, discoms compute and record allocations in sequence:
-- **Round 1:** Seller discoms allocate based on production (pro-rata)
-- **Round 2:** Buyer discoms query seller allocations, then allocate based on consumption, capped at seller's allocation
+After the delivery period, discoms compute and record allocations in three sequential rounds:
+- **Round 1:** Seller discoms allocate based on production (pro-rata). Mark `statusSellerDiscom = PENDING`.
+- **Round 2:** Buyer discoms query seller allocations from Round 1, then allocate based on consumption, capped at seller's allocation. Mark `statusBuyerDiscom = COMPLETED`.
+- **Round 3:** Seller discoms query buyer allocations from Round 2, then re-allocate capped at buyer's allocation. This allows redistribution of surplus from trades where buyers took less. Mark `statusSellerDiscom = COMPLETED`.
 
 ```python
 def compute_pro_rata_allocation(
@@ -463,6 +471,7 @@ def seller_discom_allocation_job(
 
     Computes pro-rata allocations based on seller production and records to ledger.
     This runs FIRST - buyer discoms will query these allocations in Round 2.
+    Marks statusSellerDiscom as PENDING (final status set in Round 3).
     """
     # Get all trades for this discom in the delivery slot
     trades = get_trades_by_seller_discom(discom_id, delivery_slot)
@@ -477,15 +486,16 @@ def seller_discom_allocation_job(
         # Compute pro-rata allocation
         allocations = compute_pro_rata_allocation(seller_id, meter_reading, seller_trades)
 
-        # Record each allocation to ledger
+        # Record each allocation to ledger with PENDING status
         for trade in seller_trades:
             allocated_qty = allocations[trade.order_item_id]
             record_discom_actuals(
                 role="SELLER_DISCOM",
                 trade=trade,
-                allocated_qty=allocated_qty
+                allocated_qty=allocated_qty,
+                status="PENDING"  # Round 1: initial allocation, not yet final
             )
-            log.info(f"Seller allocation recorded: {trade.order_item_id} = {allocated_qty} kWh")
+            log.info(f"Seller Round 1 allocation recorded: {trade.order_item_id} = {allocated_qty} kWh")
 
 
 def get_seller_allocations_from_ledger(
@@ -516,8 +526,8 @@ def compute_pro_rata_allocation_with_cap(
     """
     Pro-rata allocation capped at other party's allocation.
 
-    Round 2: Buyer allocates pro-rata based on consumption,
-    but caps each trade at seller's Round 1 allocation.
+    Used in Round 2 (buyer caps at seller's Round 1 allocation) and
+    Round 3 (seller caps at buyer's Round 2 allocation).
 
     Returns: {order_item_id: allocated_qty}
     """
@@ -552,12 +562,12 @@ def buyer_discom_allocation_job(
     discom_id: str
 ):
     """
-    Round 2: Batch job run by buyer discom after seller discoms have allocated.
+    Round 2: Batch job run by buyer discom after seller discoms have allocated (Round 1).
 
     1. Queries ledger to get seller allocations from Round 1
     2. Computes pro-rata allocations based on buyer consumption
     3. Caps each allocation at seller's allocation (can't pull more than pushed)
-    4. Records to ledger
+    4. Records to ledger with statusBuyerDiscom = COMPLETED
     """
     # Get all trades for this discom in the delivery slot
     trades = get_trades_by_buyer_discom(discom_id, delivery_slot)
@@ -588,17 +598,91 @@ def buyer_discom_allocation_job(
             record_discom_actuals(
                 role="BUYER_DISCOM",
                 trade=trade,
-                allocated_qty=allocated_qty
+                allocated_qty=allocated_qty,
+                status="COMPLETED"  # Round 2: buyer allocation is final
             )
             log.info(
-                f"Buyer allocation recorded: {trade.order_item_id} = {allocated_qty} kWh "
+                f"Buyer Round 2 allocation recorded: {trade.order_item_id} = {allocated_qty} kWh "
                 f"(capped at seller's {seller_alloc} kWh)"
+            )
+
+
+def get_buyer_allocations_from_ledger(
+    delivery_slot: TimeSlot,
+    discom_id: str
+) -> dict[str, float]:
+    """
+    Query ledger to get buyer allocations recorded in Round 2.
+    Returns: {order_item_id: buyer_allocated_qty}
+    """
+    records = query_ledger_records(delivery_slot, discom_id=discom_id)
+
+    buyer_allocations = {}
+    for record in records:
+        buyer_alloc = extract_allocation(record, "BUYER")
+        if buyer_alloc is not None:
+            buyer_allocations[record["orderItemId"]] = buyer_alloc
+
+    return buyer_allocations
+
+
+def seller_discom_reallocation_job(
+    delivery_slot: TimeSlot,
+    discom_id: str
+):
+    """
+    Round 3: Batch job run by seller discom after buyer discoms have allocated (Round 2).
+
+    1. Queries ledger to get buyer allocations from Round 2
+    2. Re-computes pro-rata allocations based on seller production
+    3. Caps each allocation at buyer's allocation
+    4. Records updated allocations to ledger with statusSellerDiscom = COMPLETED
+
+    This allows redistribution: if a buyer took less than the seller initially
+    offered in Round 1, the seller can reallocate that surplus to other trades
+    where buyers accepted the full allocation.
+    """
+    # Get all trades for this discom in the delivery slot
+    trades = get_trades_by_seller_discom(discom_id, delivery_slot)
+
+    # Query buyer allocations from Round 2
+    buyer_allocations = get_buyer_allocations_from_ledger(delivery_slot, discom_id)
+    log.info(f"Retrieved {len(buyer_allocations)} buyer allocations from Round 2")
+
+    # Group trades by seller
+    trades_by_seller = group_by(trades, key=lambda t: t.seller_id)
+
+    for seller_id, seller_trades in trades_by_seller.items():
+        # Get meter reading for this seller (production)
+        meter_reading = get_meter_reading(seller_id, delivery_slot, type="GENERATION")
+
+        # Re-compute pro-rata allocation, capped at buyer's Round 2 allocation
+        allocations = compute_pro_rata_allocation_with_cap(
+            seller_id,
+            meter_reading,
+            seller_trades,
+            buyer_allocations
+        )
+
+        # Record updated allocations to ledger with COMPLETED status
+        for trade in seller_trades:
+            allocated_qty = allocations[trade.order_item_id]
+            buyer_alloc = buyer_allocations.get(trade.order_item_id, "N/A")
+            record_discom_actuals(
+                role="SELLER_DISCOM",
+                trade=trade,
+                allocated_qty=allocated_qty,
+                status="COMPLETED"  # Round 3: seller allocation is now final
+            )
+            log.info(
+                f"Seller Round 3 re-allocation recorded: {trade.order_item_id} = {allocated_qty} kWh "
+                f"(capped at buyer's {buyer_alloc} kWh)"
             )
 ```
 
-### Step 3: Settlement Engine Computes Min-of-Two (Round 3)
+### Step 3: Platforms Read Final Settlement
 
-After both discoms have recorded their allocations (Rounds 1 & 2), the settlement engine queries the ledger and applies the min-of-two rule.
+After all three discom allocation rounds are complete (both `statusSellerDiscom` and `statusBuyerDiscom` are `COMPLETED`), trading platforms and settlement engines can query the ledger to read the final converged allocations. The min-of-two rule is applied as a verification — after convergence, both allocations should agree.
 
 ```python
 def query_ledger_records(
@@ -701,8 +785,11 @@ def compute_settlement(record: LedgerRecord) -> SettlementResult:
 
 def settlement_batch_job(delivery_slot: TimeSlot):
     """
-    Main settlement job run after both discoms have recorded allocations.
-    Queries ledger, computes min-of-two, generates billing records.
+    Main settlement job run after all 3 discom allocation rounds are complete.
+    Queries ledger, verifies convergence via min-of-two, generates billing records.
+
+    After the 3-round convergence, seller_alloc (Round 3) should equal
+    buyer_alloc (Round 2) for each trade. The min-of-two serves as verification.
     """
     # Query all records for the delivery slot
     records = query_ledger_records(delivery_slot)
@@ -834,8 +921,8 @@ def handle_ledger_error(response: requests.Response):
 
 ```
 ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌──────────┐  ┌────────┐
-│ Buyer   │  │ Seller  │  │ Ledger  │  │ Seller   │  │ Buyer    │  │Settle- │
-│ Platform│  │ Platform│  │ Service │  │ Discom   │  │ Discom   │  │ment    │
+│ Buyer   │  │ Seller  │  │ Ledger  │  │ Seller   │  │ Buyer    │  │Trading │
+│ Platform│  │ Platform│  │ Service │  │ Discom   │  │ Discom   │  │Platform│
 └────┬────┘  └────┬────┘  └────┬────┘  └────┬─────┘  └────┬─────┘  └───┬────┘
      │            │            │            │             │            │
      │  Trade Confirmed        │            │             │            │
@@ -847,17 +934,18 @@ def handle_ledger_error(response: requests.Response):
      │            │  recordId  │            │             │            │
      │            │            │            │             │            │
      │            │            │                                       │
-     │            │            │  ══════ ROUND 1: Seller Allocates ══════
-     │            │            │   T+2h: Meter readings available      │
+     │            │            │  ══ ROUND 1: Seller Allocates (PENDING) ══
+     │            │            │   Meter readings available            │
      │            │            │            │             │            │
      │            │            │<───────────│             │            │
      │            │            │  POST /ledger/record     │            │
      │            │            │  ACTUAL_PUSHED=70 kWh   │            │
+     │            │            │  statusSellerDiscom=PENDING           │
      │            │            │───────────>│             │            │
      │            │            │     OK     │             │            │
      │            │            │            │             │            │
-     │            │            │  ══════ ROUND 2: Buyer Allocates ══════
-     │            │            │   T+4h: Buyer queries seller allocs   │
+     │            │            │  ══ ROUND 2: Buyer Allocates (COMPLETED) ══
+     │            │            │   Buyer queries seller allocs        │
      │            │            │            │             │            │
      │            │            │<──────────────────────────            │
      │            │            │  POST /ledger/get                     │
@@ -871,23 +959,42 @@ def handle_ledger_error(response: requests.Response):
      │            │            │<──────────────────────────            │
      │            │            │  POST /ledger/record                  │
      │            │            │  ACTUAL_PULLED=70 kWh (capped)        │
+     │            │            │  statusBuyerDiscom=COMPLETED          │
      │            │            │──────────────────────────>            │
      │            │            │     OK     │             │            │
      │            │            │            │             │            │
-     │            │            │  ══════ ROUND 3: Settlement ══════════
-     │            │            │   T+6h: Settlement window             │
+     │            │            │  ══ ROUND 3: Seller Re-Allocates (COMPLETED) ══
+     │            │            │   Seller queries buyer allocs         │
+     │            │            │            │             │            │
+     │            │            │<───────────│             │            │
+     │            │            │  POST /ledger/get        │            │
+     │            │            │  (get buyer allocations)  │            │
+     │            │            │───────────>│             │            │
+     │            │            │  ACTUAL_PULLED=70 kWh    │            │
+     │            │            │            │             │            │
+     │            │            │  Seller re-computes, caps at buyer's 70│
+     │            │            │            │             │            │
+     │            │            │<───────────│             │            │
+     │            │            │  POST /ledger/record     │            │
+     │            │            │  ACTUAL_PUSHED=70 kWh (confirmed)     │
+     │            │            │  statusSellerDiscom=COMPLETED         │
+     │            │            │───────────>│             │            │
+     │            │            │     OK     │             │            │
+     │            │            │            │             │            │
+     │            │            │  ══ SETTLEMENT: Platforms Read Final Status ══
+     │            │            │   Both statuses COMPLETED             │
      │            │            │            │             │            │
      │            │            │<─────────────────────────────────────│
      │            │            │  POST /ledger/get                    │
      │            │            │  (query by delivery slot)            │
      │            │            │─────────────────────────────────────>│
-     │            │            │  seller=70, buyer=70                 │
+     │            │            │  seller=70, buyer=70 (converged)     │
      │            │            │            │             │            │
-     │            │            │            │             │  settle_k = min(70, 70) = 70 kWh
+     │            │            │            │             │  settled = min(70, 70) = 70 kWh
      │            │            │            │             │  → Generate billing
 ```
 
-**Key insight:** In Round 2, buyer discom queries seller's allocation (70 kWh) and caps its allocation at that value. Even though buyer consumed 80 kWh, the allocation is capped at 70 kWh because seller only pushed 70 kWh. The min-of-two in Round 3 becomes `min(70, 70) = 70`.
+**Key insight:** The 3-round process ensures convergence. In Round 1, the seller discom sets the upper bound (70 kWh based on production). In Round 2, the buyer discom allocates within that bound (70 kWh, capped from 80 kWh consumption). In Round 3, the seller discom confirms by re-allocating within the buyer's bound. After convergence, both allocations agree, and the min-of-two verification yields `min(70, 70) = 70 kWh`.
 
 ---
 
@@ -897,7 +1004,7 @@ def handle_ledger_error(response: requests.Response):
 |--------|----------------------|
 | Settlement rule | $\text{settle}_k = \min(a^B_k, a^S_k)$ |
 | Allocation method | Pro-rata (recommended) |
-| Flow | Seller allocates → Buyer allocates → Min-of-two settlement |
+| Flow | Seller allocates (PENDING) → Buyer allocates (COMPLETED) → Seller re-allocates (COMPLETED) |
 | Optimality | 67-90% of global optimum in worst case |
 | Complexity | Simple, no optimization solvers needed |
 
@@ -906,6 +1013,45 @@ The min-of-two approach satisfies our design principles:
 - **Shortfall accountability:** Underproduce/underconsume → reduced settlement
 - **Independence:** Each utility allocates based only on its customers' meters
 - **Existing flows:** No inter-utility payments required
+
+---
+
+## 9. Consensus Rules for AI Summit
+
+The following time gates define the settlement schedule agreed upon for the AI Summit demonstration. These are specific deadlines for each round of the 3-round allocation flow.
+
+**Assumptions:**
+- Delivery window: **6:00 AM to 7:00 AM**
+- Meter data available with discoms by: **next day, 9:00 AM**
+
+| Round | Actor | Deadline | Action | Status Field |
+|-------|-------|----------|--------|--------------|
+| 1 | Seller Discom | 9:55 AM | Writes allocations (ACTUAL_PUSHED) to ledger | `statusSellerDiscom = PENDING` |
+| 2 | Buyer Discom | 10:55 AM | Reads ledger (by 10:00 AM), writes allocations (ACTUAL_PULLED) capped at seller's Round 1 values | `statusBuyerDiscom = COMPLETED` |
+| 3 | Seller Discom | 11:55 AM | Reads buyer allocations, writes final allocations capped at buyer's Round 2 values | `statusSellerDiscom = COMPLETED` |
+| — | Trading Platforms | 12:00 PM (noon) | Read final settled status from ledger | Both statuses `COMPLETED` |
+
+```
+Timeline (AI Summit):
+
+  Day 1
+  ├── 06:00 AM  Delivery window starts
+  └── 07:00 AM  Delivery window ends
+
+  Day 2 (next morning)
+  ├── 09:00 AM  Meter data available with discoms
+  ├── 09:55 AM  [Round 1] Seller discom writes allocations → statusSellerDiscom = PENDING
+  ├── 10:00 AM  Buyer discom reads seller allocations from ledger
+  ├── 10:55 AM  [Round 2] Buyer discom writes allocations → statusBuyerDiscom = COMPLETED
+  ├── 11:55 AM  [Round 3] Seller discom writes final allocations → statusSellerDiscom = COMPLETED
+  └── 12:00 PM  Trading platforms read final settlement status
+```
+
+**Notes:**
+- All times refer to the day after the delivery window (D+1).
+- Each round has a ~55-minute window to allow for batch processing across all trades in the delivery slot.
+- The 5-minute gap between rounds (e.g., 9:55 AM finish → 10:00 AM read) allows the ledger to propagate writes before the next reader begins.
+- If a discom misses its deadline, the trade remains in an incomplete state and must be handled through exception processes.
 
 ---
 
