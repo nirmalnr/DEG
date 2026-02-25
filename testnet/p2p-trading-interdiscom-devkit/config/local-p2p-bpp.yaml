@@ -70,9 +70,6 @@ modules:
           - id: policyenforcer
             config:
               policyUrls: "https://raw.githubusercontent.com/beckn/DEG/refs/heads/p2p-trading/testnet/p2p-trading-interdiscom-devkit/policies/p2p-trading-interdiscom.rego"
-              enabled: "true"
-              debugLogging: "true"
-              minDeliveryLeadHours: "4"
       steps:
         - validateSign
         - addRoute
@@ -146,11 +143,15 @@ modules:
               signingPrivateKey: AC72WfPu5ly3T7rXfRHrLA/l++BxbsNwe0qitgT9u6U=
               networkParticipant: p2p-trading-sandbox2.com
               keyId: 76EU7Mvhh7jaEf7Lcac5R1PPeFL4ddr1ALs2QYzpyTRE8g15Yr1p7C
+          - id: policyenforcer
+            config:
+              policyUrls: "https://raw.githubusercontent.com/beckn/DEG/refs/heads/p2p-trading/testnet/p2p-trading-interdiscom-devkit/policies/p2p-trading-interdiscom.rego"
       steps:
         - addRoute
         - sign
         - validateSchema
         - degledgerrecorder
+        - policyenforcer
   
   # BAP Modules: For cascaded calls to utility BPP
   # This module receives responses FROM utility BPP (on_init, on_confirm, on_update)

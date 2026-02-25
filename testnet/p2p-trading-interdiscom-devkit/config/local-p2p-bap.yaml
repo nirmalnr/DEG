@@ -75,9 +75,6 @@ modules:
           - id: policyenforcer
             config:
               policyUrls: "https://raw.githubusercontent.com/beckn/DEG/refs/heads/p2p-trading/testnet/p2p-trading-interdiscom-devkit/policies/p2p-trading-interdiscom.rego"
-              enabled: "true"
-              debugLogging: "true"
-              minDeliveryLeadHours: "4"
           - id: degledgerrecorder
             config:
               # ledgerHost: "https://34.93.166.38.sslip.io" OLD URL
@@ -151,6 +148,10 @@ modules:
             config:
               uuidKeys: transaction_id,message_id
               role: bap
+        steps:
+          - id: policyenforcer
+            config:
+              policyUrls: "https://raw.githubusercontent.com/beckn/DEG/refs/heads/p2p-trading/testnet/p2p-trading-interdiscom-devkit/policies/p2p-trading-interdiscom.rego"
       steps:
         - addRoute
         - sign

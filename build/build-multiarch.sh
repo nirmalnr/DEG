@@ -16,7 +16,7 @@
 # Environment Variables:
 #   BECKN_ONIX_ROOT - Path to beckn-onix repo (will prompt if not set and default not found)
 #   IMAGE_NAME      - Image name (default: onix-adapter-deg)
-#   IMAGE_TAG       - Image tag (default: p2p-multiarch-v3)
+#   IMAGE_TAG       - Image tag (default: p2p-multiarch-v5)
 #   REGISTRY        - Registry prefix (default: none, local build)
 #   PLATFORMS       - Platforms to build (default: linux/amd64,linux/arm64)
 #   BUILDER_NAME    - Buildx builder name (default: deg-multiarch)
@@ -54,7 +54,7 @@ fi
 
 # Configuration with defaults
 IMAGE_NAME="${IMAGE_NAME:-onix-adapter-deg}"
-IMAGE_TAG="${IMAGE_TAG:-p2p-multiarch-v3}"
+IMAGE_TAG="${IMAGE_TAG:-p2p-multiarch-v5}"
 REGISTRY="${REGISTRY:-}"
 PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
 BUILDER_NAME="${BUILDER_NAME:-deg-multiarch}"
@@ -92,14 +92,14 @@ while [[ $# -gt 0 ]]; do
             echo "  --push              Push to registry after build"
             echo "  --load              Load into local Docker (single arch only)"
             echo "  --platform ARCH     Build for specific platform (amd64, arm64)"
-            echo "  --tag TAG           Image tag (default: p2p-multiarch-v3)"
+            echo "  --tag TAG           Image tag (default: p2p-multiarch-v5)"
             echo "  --registry REG      Registry prefix (e.g., docker.io/myuser)"
             echo "  --help              Show this help message"
             echo ""
             echo "Environment Variables:"
             echo "  BECKN_ONIX_ROOT     Path to beckn-onix repo (prompts if not set)"
             echo "  IMAGE_NAME          Image name (default: onix-adapter-deg)"
-            echo "  IMAGE_TAG           Image tag (default: p2p-multiarch-v3)"
+            echo "  IMAGE_TAG           Image tag (default: p2p-multiarch-v5)"
             echo "  REGISTRY            Registry prefix"
             echo "  PLATFORMS           Platforms (default: linux/amd64,linux/arm64)"
             exit 0

@@ -1293,156 +1293,111 @@ test_energy_trade_offer_no_type_skips if {
 	count(result) == 0
 }
 
-# ===== Publish action: production network DISCOM validation =====
+# ===== Catalog publish: production network DISCOM validation =====
+
+# Helper: build a catalog_publish item with given network, meterId, utilityId
+_publish_item(net_id, meter, utility) := {
+	"@type": "beckn:Item",
+	"beckn:networkId": [net_id],
+	"beckn:provider": {"beckn:providerAttributes": {
+		"@type": "EnergyCustomer",
+		"meterId": meter,
+		"utilityId": utility,
+		"utilityCustomerId": "CUST-001",
+	}},
+}
+
+_publish_input(items) := {
+	"context": {"action": "catalog_publish"},
+	"message": {"catalogs": [{"beckn:items": items}]},
+}
 
 # --- Compliant: production network with approved DISCOM ---
 test_publish_production_approved_discom if {
-	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-pilot-network",
-			"providerAttributes": {
-				"meterId": "der://meter/SELLER-001",
-				"utilityId": "TPDDL",
-			},
-		}]}},
-	}
+	result := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-pilot-network", "der://meter/SELLER-001", "TPDDL"),
+	])
 	count(result) == 0
 }
 
 # --- All three approved DISCOMs accepted on production ---
 test_publish_production_all_three_discoms if {
-	r1 := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-pilot-network",
-			"providerAttributes": {"utilityId": "TPDDL", "meterId": "m1"},
-		}]}},
-	}
+	r1 := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-pilot-network", "m1", "TPDDL"),
+	])
 	count(r1) == 0
 
-	r2 := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-pilot-network",
-			"providerAttributes": {"utilityId": "PVVNL", "meterId": "m2"},
-		}]}},
-	}
+	r2 := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-pilot-network", "m2", "PVVNL"),
+	])
 	count(r2) == 0
 
-	r3 := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-pilot-network",
-			"providerAttributes": {"utilityId": "BRPL", "meterId": "m3"},
-		}]}},
-	}
+	r3 := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-pilot-network", "m3", "BRPL"),
+	])
 	count(r3) == 0
 }
 
 # --- Non-compliant: production network with unapproved DISCOM ---
 test_publish_production_unapproved_discom if {
-	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-pilot-network",
-			"providerAttributes": {
-				"meterId": "der://meter/SELLER-001",
-				"utilityId": "UNKNOWN_DISCOM",
-			},
-		}]}},
-	}
+	result := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-pilot-network", "der://meter/SELLER-001", "UNKNOWN_DISCOM"),
+	])
 	count(result) == 1
 }
 
 # --- Non-compliant: production network with missing providerAttributes ---
 test_publish_production_missing_provider if {
 	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-pilot-network",
-		}]}},
+		"context": {"action": "catalog_publish"},
+		"message": {"catalogs": [{"beckn:items": [{
+			"@type": "beckn:Item",
+			"beckn:networkId": ["p2p-interdiscom-trading-pilot-network"],
+		}]}]},
 	}
 	count(result) == 1
 }
 
 # --- Multiple items: one compliant, one not ---
 test_publish_production_mixed_items if {
-	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [
-			{
-				"network_id": "p2p-interdiscom-trading-pilot-network",
-				"providerAttributes": {"utilityId": "TPDDL", "meterId": "m1"},
-			},
-			{
-				"network_id": "p2p-interdiscom-trading-pilot-network",
-				"providerAttributes": {"utilityId": "BAD_DISCOM", "meterId": "m2"},
-			},
-		]}},
-	}
+	result := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-pilot-network", "m1", "TPDDL"),
+		_publish_item("p2p-interdiscom-trading-pilot-network", "m2", "BAD_DISCOM"),
+	])
 	count(result) == 1
 }
 
-# ===== Publish action: non-production network test values =====
+# ===== Catalog publish: non-production network test values =====
 
 # --- Compliant: non-production with correct test values ---
 test_publish_sandbox_correct_test_values if {
-	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-sandbox",
-			"providerAttributes": {
-				"meterId": "TEST_METER_SELLER",
-				"utilityId": "TEST_DISCOM_SELLER",
-			},
-		}]}},
-	}
+	result := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-sandbox", "TEST_METER_SELLER", "TEST_DISCOM_SELLER"),
+	])
 	count(result) == 0
 }
 
 # --- Non-compliant: non-production with real meter ---
 test_publish_sandbox_real_meter if {
-	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-sandbox",
-			"providerAttributes": {
-				"meterId": "der://meter/SELLER-001",
-				"utilityId": "TEST_DISCOM_SELLER",
-			},
-		}]}},
-	}
+	result := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-sandbox", "der://meter/SELLER-001", "TEST_DISCOM_SELLER"),
+	])
 	count(result) == 1
 }
 
 # --- Non-compliant: non-production with real DISCOM ---
 test_publish_sandbox_real_discom if {
-	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-sandbox",
-			"providerAttributes": {
-				"meterId": "TEST_METER_SELLER",
-				"utilityId": "TPDDL",
-			},
-		}]}},
-	}
+	result := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-sandbox", "TEST_METER_SELLER", "TPDDL"),
+	])
 	count(result) == 1
 }
 
 # --- Non-compliant: non-production with both real values (2 violations) ---
 test_publish_sandbox_both_real if {
-	result := policy.violations with input as {
-		"context": {"action": "publish"},
-		"message": {"catalog": {"beckn:Item": [{
-			"network_id": "p2p-interdiscom-trading-sandbox",
-			"providerAttributes": {
-				"meterId": "der://meter/SELLER-001",
-				"utilityId": "TPDDL",
-			},
-		}]}},
-	}
+	result := policy.violations with input as _publish_input([
+		_publish_item("p2p-interdiscom-trading-sandbox", "der://meter/SELLER-001", "TPDDL"),
+	])
 	count(result) == 2
 }
 
@@ -1635,10 +1590,9 @@ test_publish_rules_skip_on_confirm if {
 					}},
 				}],
 			},
-			"catalog": {"beckn:Item": [{
-				"network_id": "p2p-interdiscom-trading-pilot-network",
-				"providerAttributes": {"utilityId": "UNKNOWN", "meterId": "x"},
-			}]},
+			"catalogs": [{"beckn:items": [
+				_publish_item("p2p-interdiscom-trading-pilot-network", "x", "UNKNOWN"),
+			]}],
 		},
 	}
 	# Even though catalog has bad data, publish rules don't fire on confirm

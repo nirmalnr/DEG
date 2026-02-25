@@ -47,14 +47,14 @@ import rego.v1
 # 14. EnergyTradeOffer @context: when offer @type is "EnergyTradeOffer",
 #     @context must match the same URL.
 #
-# ── publish action (catalog item validation) ──
+# ── catalog_publish action (catalog item validation) ──
 #
-# P1. Production network items: providerAttributes must exist, utilityId must
-#     be an approved DISCOM (TPDDL, PVVNL, BRPL).
+# P1. Production network items: beckn:providerAttributes must exist, utilityId
+#     must be an approved DISCOM (TPDDL, PVVNL, BRPL).
 # P2. Non-production network items: provider meterId must be TEST_METER_SELLER,
 #     provider utilityId must be TEST_DISCOM_SELLER.
 #
-# ── non-publish actions (test ID consistency) ──
+# ── non-catalog_publish actions (test ID consistency) ──
 #
 # T1. If any provider uses test identifiers (meterId or utilityId starting
 #     with "TEST_"), the buyer must also use test values:
@@ -486,21 +486,22 @@ violations contains msg if {
 	some msg in _confirm_violations
 }
 
-# Publish action: network-based catalog item validation
+# Catalog publish action: network-based catalog item validation
 violations contains msg if {
-	input.context.action == "publish"
+	input.context.action == "catalog_publish"
 	some msg in _publish_violations
 }
 
 # Non-publish actions (select, init, confirm, etc.): test ID consistency
 violations contains msg if {
-	input.context.action != "publish"
+	input.context.action != "catalog_publish"
 	some msg in _test_consistency_violations
 }
 
-# ===== Publish-action rules =====
+# ===== Catalog publish rules =====
 #
-# For publish (catalog) messages, each beckn:Item carries a network_id.
+# For catalog_publish messages, items are at message.catalogs[].beckn:items[].
+# Each beckn:Item has beckn:networkId (array) and beckn:provider.beckn:providerAttributes.
 # - Production network: providerAttributes must exist with an approved DISCOM.
 # - Non-production network: provider must use test identifiers.
 
@@ -509,56 +510,61 @@ _production_network_id := "p2p-interdiscom-trading-pilot-network"
 # Approved DISCOMs for production network (extend this list as needed)
 _allowed_utility_ids := {"TPDDL", "PVVNL", "BRPL"}
 
-# Publish Rule 1 — Production: providerAttributes must exist
+# Helper: extract provider attributes from a catalog item
+_catalog_provider(item) := item["beckn:provider"]["beckn:providerAttributes"]
+
+# Publish Rule 1 — Production: beckn:providerAttributes must exist
 _publish_violations contains msg if {
-	item := input.message.catalog["beckn:Item"][i]
-	item.network_id == _production_network_id
-	not item.providerAttributes
+	item := input.message.catalogs[_]["beckn:items"][i]
+	_production_network_id in item["beckn:networkId"]
+	not item["beckn:provider"]["beckn:providerAttributes"]
 
 	msg := sprintf(
-		"catalog item [%d]: providerAttributes is missing on production network item",
+		"catalog item [%d]: beckn:providerAttributes is missing on production network item",
 		[i],
 	)
 }
 
 # Publish Rule 2 — Production: provider utilityId must be an approved DISCOM
 _publish_violations contains msg if {
-	item := input.message.catalog["beckn:Item"][i]
-	item.network_id == _production_network_id
-	item.providerAttributes
-	not item.providerAttributes.utilityId in _allowed_utility_ids
+	item := input.message.catalogs[_]["beckn:items"][i]
+	_production_network_id in item["beckn:networkId"]
+	provider := _catalog_provider(item)
+	not provider.utilityId in _allowed_utility_ids
 
 	msg := sprintf(
 		"catalog item [%d]: provider utilityId %q is not an approved DISCOM; must be one of %v",
-		[i, item.providerAttributes.utilityId, _allowed_utility_ids],
+		[i, provider.utilityId, _allowed_utility_ids],
 	)
 }
 
 # Publish Rule 3 — Non-production: provider meterId must be TEST_METER_SELLER
 _publish_violations contains msg if {
-	item := input.message.catalog["beckn:Item"][i]
-	item.network_id
-	item.network_id != _production_network_id
-	item.providerAttributes.meterId
-	item.providerAttributes.meterId != "TEST_METER_SELLER"
+	item := input.message.catalogs[_]["beckn:items"][i]
+	net_id := item["beckn:networkId"][_]
+	net_id != _production_network_id
+	provider := _catalog_provider(item)
+	provider.meterId
+	provider.meterId != "TEST_METER_SELLER"
 
 	msg := sprintf(
 		"catalog item [%d]: non-production network %q: provider meterId is %q; must be TEST_METER_SELLER",
-		[i, item.network_id, item.providerAttributes.meterId],
+		[i, net_id, provider.meterId],
 	)
 }
 
 # Publish Rule 4 — Non-production: provider utilityId must be TEST_DISCOM_SELLER
 _publish_violations contains msg if {
-	item := input.message.catalog["beckn:Item"][i]
-	item.network_id
-	item.network_id != _production_network_id
-	item.providerAttributes.utilityId
-	item.providerAttributes.utilityId != "TEST_DISCOM_SELLER"
+	item := input.message.catalogs[_]["beckn:items"][i]
+	net_id := item["beckn:networkId"][_]
+	net_id != _production_network_id
+	provider := _catalog_provider(item)
+	provider.utilityId
+	provider.utilityId != "TEST_DISCOM_SELLER"
 
 	msg := sprintf(
 		"catalog item [%d]: non-production network %q: provider utilityId is %q; must be TEST_DISCOM_SELLER",
-		[i, item.network_id, item.providerAttributes.utilityId],
+		[i, net_id, provider.utilityId],
 	)
 }
 
