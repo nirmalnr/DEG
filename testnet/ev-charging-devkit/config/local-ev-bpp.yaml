@@ -47,7 +47,7 @@ modules:
           id: schemav2validator
           config:
             type: url
-            location: https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/api/beckn.yaml
+            location: https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/api/beckn.yaml
             cacheTTL: "3600"
         cache:
           id: cache
@@ -94,7 +94,7 @@ modules:
           id: schemav2validator
           config:
             type: url
-            location: https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/api/beckn.yaml
+            location: https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/api/beckn.yaml
             cacheTTL: "3600"
         cache:
           id: cache
