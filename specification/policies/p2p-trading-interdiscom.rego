@@ -382,7 +382,7 @@ _order_violations contains msg if {
 
 # ===== JSON-LD @context validation =====
 
-_required_context := "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/refs/heads/p2p-trading/schema/EnergyTrade/v0.3/context.jsonld"
+_required_context := "https://raw.githubusercontent.com/beckn/DEG/refs/heads/p2p-trading/specification/schema/EnergyTrade/v0.3/context.jsonld"
 
 # Rule 15a – Buyer EnergyCustomer @context
 _order_violations contains msg if {
