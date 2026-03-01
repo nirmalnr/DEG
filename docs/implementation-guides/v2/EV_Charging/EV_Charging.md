@@ -488,7 +488,7 @@ Note: Users can discover the charging station through off-network channels (such
   "message": {
     "catalogs": [
       {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Catalog",
         "beckn:id": "catalog-ev-charging-001",
         "beckn:descriptor": {
@@ -500,7 +500,7 @@ Note: Users can discover the charging station through off-network channels (such
         "beckn:bppUri": "https://bpp.ev-network.example.com/bpp",
         "beckn:items": [
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Item",
             "beckn:id": "IND*ecopower-charging*cs-01*IN*ECO*BTM*01*CCS2*A*CCS2-A",
             "beckn:descriptor": {
@@ -576,7 +576,7 @@ Note: Users can discover the charging station through off-network channels (such
             }
           },
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Item",
             "beckn:id": "IND*GoGreen-charging*cs-02*IN*ECO*BTM*01*CCS2*A*CCS2-B",
             "beckn:descriptor": {
@@ -654,7 +654,7 @@ Note: Users can discover the charging station through off-network channels (such
         ],
         "beckn:offers": [
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "eco-charge-offer-ccs2-60kw-kwh",
             "beckn:descriptor": {
@@ -700,7 +700,7 @@ Note: Users can discover the charging station through off-network channels (such
             "beckn:provider": "GoGreen-charging"
           },
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "go-green-offer-ccs2-60kw-kwh",
             "beckn:descriptor": {
@@ -792,12 +792,12 @@ CPO returns details of a specific charger: [Example](../../../../examples/ev-cha
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "ecopower-charging",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -815,7 +815,7 @@ CPO returns details of a specific charger: [Example](../../../../examples/ev-cha
             "unitQuantity": 2.5
           },
           "beckn:acceptedOffer": {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "offer-ccs2-60kw-kwh",
             "beckn:descriptor": {
@@ -897,12 +897,12 @@ EV user requests charge worth in KWH: [Example](../../../../examples/ev-charging
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "ecopower-charging",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -920,7 +920,7 @@ EV user requests charge worth in KWH: [Example](../../../../examples/ev-charging
             "unitQuantity": 2.5
           },
           "beckn:acceptedOffer": {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "offer-ccs2-60kw-kwh",
             "beckn:descriptor": {
@@ -1052,12 +1052,12 @@ CPO responds with dynamically calculated quote: [Example](../../../../examples/e
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -1128,7 +1128,7 @@ CPO responds with dynamically calculated quote: [Example](../../../../examples/e
         ]
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:amount": {
           "currency": "INR",
@@ -1197,13 +1197,13 @@ EV user requests for payment information: [Example](../../../../examples/ev-char
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -1274,7 +1274,7 @@ EV user requests for payment information: [Example](../../../../examples/ev-char
         ]
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -1360,13 +1360,13 @@ CPO responds with the payment link for the user to authorize payment: [Example](
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "PENDING",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -1437,7 +1437,7 @@ CPO responds with the payment link for the user to authorize payment: [Example](
         ]
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -1484,13 +1484,13 @@ CPO sends the status of the payment: [Example](../../../../examples/ev-charging/
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "PENDING",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -1561,7 +1561,7 @@ CPO sends the status of the payment: [Example](../../../../examples/ev-charging/
         ]
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -1620,13 +1620,13 @@ EV user confirms reservation of a slot at a particular charging station at a par
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CONFIRMED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -1697,7 +1697,7 @@ EV user confirms reservation of a slot at a particular charging station at a par
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -1710,7 +1710,7 @@ EV user confirms reservation of a slot at a particular charging station at a par
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -1769,13 +1769,13 @@ CPO responds with confirmed slot: [Example](../../../../examples/ev-charging/v2/
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CONFIRMED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -1846,7 +1846,7 @@ CPO responds with confirmed slot: [Example](../../../../examples/ev-charging/v2/
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -1859,7 +1859,7 @@ CPO responds with confirmed slot: [Example](../../../../examples/ev-charging/v2/
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -1918,13 +1918,13 @@ The user checks the status of charging connector: [Example](../../../../examples
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CONFIRMED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -1981,7 +1981,7 @@ The user checks the status of charging connector: [Example](../../../../examples
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -1995,7 +1995,7 @@ The user checks the status of charging connector: [Example](../../../../examples
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -2054,13 +2054,13 @@ The CPO response with the status of the charging connector: [Example](../../../.
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CONFIRMED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -2117,7 +2117,7 @@ The CPO response with the status of the charging connector: [Example](../../../.
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -2130,7 +2130,7 @@ The CPO response with the status of the charging connector: [Example](../../../.
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -2188,13 +2188,13 @@ EV user starts a charging session: [Example](../../../../examples/ev-charging/v2
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -2251,7 +2251,7 @@ EV user starts a charging session: [Example](../../../../examples/ev-charging/v2
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -2264,7 +2264,7 @@ EV user starts a charging session: [Example](../../../../examples/ev-charging/v2
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -2323,13 +2323,13 @@ CPO responds with confirmed start of charging session: [Example](../../../../exa
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123"
       },
@@ -2385,13 +2385,13 @@ EV User tracks a live charging session in real-time: [Example](../../../../examp
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123"
       },
@@ -2401,7 +2401,7 @@ EV User tracks a live charging session in real-time: [Example](../../../../examp
         }
       ],
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -2526,13 +2526,13 @@ EV User receives a live charging session in real-time: [Example](../../../../exa
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123"
       },
@@ -2584,7 +2584,7 @@ EV User receives a live charging session in real-time: [Example](../../../../exa
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -2595,7 +2595,7 @@ EV User receives a live charging session in real-time: [Example](../../../../exa
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -2654,13 +2654,13 @@ EV user reveives a notification in case of any error occuring during charging se
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -2717,7 +2717,7 @@ EV user reveives a notification in case of any error occuring during charging se
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -2728,7 +2728,7 @@ EV user reveives a notification in case of any error occuring during charging se
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -2775,13 +2775,13 @@ EV user stops the charging session: [Example](../../../../examples/ev-charging/v
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "COMPLETED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -2838,7 +2838,7 @@ EV user stops the charging session: [Example](../../../../examples/ev-charging/v
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -2849,7 +2849,7 @@ EV user stops the charging session: [Example](../../../../examples/ev-charging/v
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -2909,7 +2909,7 @@ EV user receives the session details upon chargign session end: [Example](../../
   "message": {
     "ratings": [
       {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:RatingInput",
         "id": "fulfillment-001",
         "ratingValue": 4,
@@ -2974,7 +2974,7 @@ EV user rates charging service experience: [Example](../../../../examples/ev-cha
   "message": {
     "received": true,
     "feedbackForm": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Form",
       "url": "https://example-bpp.com/feedback/portal",
       "mime_type": "application/xml",
@@ -3029,7 +3029,7 @@ EV user contacts support: [Example](../../../../examples/ev-charging/v2/17_suppo
     "refId": "order-ev-charging-001",
     "refType": "ORDER",
     "support": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:SupportInfo",
       "name": "Ravi Kumar",
       "phone": "+91-9876543210",
@@ -3083,7 +3083,7 @@ EV user contacts support: [Example](../../../../examples/ev-charging/v2/17_suppo
   },
   "message": {
     "support": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:SupportInfo",
       "name": "BlueCharge Support Team",
       "phone": "18001080",
@@ -3452,7 +3452,7 @@ Discovering chargers in a specific circular area, a specific connector type and 
   "message": {
     "catalogs": [
       {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Catalog",
         "beckn:id": "catalog-ev-charging-001",
         "beckn:descriptor": {
@@ -3464,7 +3464,7 @@ Discovering chargers in a specific circular area, a specific connector type and 
         "beckn:bppUri": "https://bpp.ev-network.example.com/bpp",
         "beckn:items": [
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Item",
             "beckn:id": "IND*ecopower-charging*cs-01*IN*ECO*BTM*01*CCS2*A*CCS2-A",
             "beckn:descriptor": {
@@ -3540,7 +3540,7 @@ Discovering chargers in a specific circular area, a specific connector type and 
             }
           },
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Item",
             "beckn:id": "IND*greencharge-koramangala*cs-02*IN*GC*KOR*01*CCS2*A*CCS2-B",
             "beckn:descriptor": {
@@ -3617,7 +3617,7 @@ Discovering chargers in a specific circular area, a specific connector type and 
             }
           },
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Item",
             "beckn:id": "IND*powergrid-indiranagar*cs-03*IN*PG*IND*01*TYPE2*A*TYPE2-A",
             "beckn:descriptor": {
@@ -3695,7 +3695,7 @@ Discovering chargers in a specific circular area, a specific connector type and 
         ],
         "beckn:offers": [
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "offer-ccs2-60kw-kwh",
             "beckn:descriptor": {
@@ -3741,7 +3741,7 @@ Discovering chargers in a specific circular area, a specific connector type and 
             "beckn:provider": "ecopower-charging"
           },
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "offer-ccs2-120kw-kwh",
             "beckn:descriptor": {
@@ -3788,7 +3788,7 @@ Discovering chargers in a specific circular area, a specific connector type and 
             "beckn:provider": "greencharge-koramangala"
           },
           {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "offer-type2-22kw-kwh",
             "beckn:descriptor": {
@@ -3978,12 +3978,12 @@ Offer schema in the catalog:
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "ecopower-charging",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -4001,7 +4001,7 @@ Offer schema in the catalog:
             "unitQuantity": 2.5
           },
           "beckn:acceptedOffer": {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "offer-ccs2-60kw-kwh",
             "beckn:descriptor": {
@@ -4095,12 +4095,12 @@ Recommendations for BPP:
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "ecopower-charging",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -4118,7 +4118,7 @@ Recommendations for BPP:
             "unitQuantity": 2.5
           },
           "beckn:acceptedOffer": {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:id": "offer-ccs2-60kw-kwh",
             "beckn:descriptor": {
@@ -4339,13 +4339,13 @@ Recommendations for BAP:
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -4416,7 +4416,7 @@ Recommendations for BAP:
         ]
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -4501,13 +4501,13 @@ Recommendations for BAP:
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CREATED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -4578,7 +4578,7 @@ Recommendations for BAP:
         ]
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -4734,13 +4734,13 @@ However, when the BAP collects the payment, an unsolicited on\_status call is no
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "PENDING",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -4811,7 +4811,7 @@ However, when the BAP collects the payment, an unsolicited on\_status call is no
         ]
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -4881,13 +4881,13 @@ However, when the BAP collects the payment, an unsolicited on\_status call is no
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CONFIRMED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -4958,7 +4958,7 @@ However, when the BAP collects the payment, an unsolicited on\_status call is no
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -4971,7 +4971,7 @@ However, when the BAP collects the payment, an unsolicited on\_status call is no
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -5051,13 +5051,13 @@ Once these physical steps are completed, the charging session can be initiated t
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "CONFIRMED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -5114,7 +5114,7 @@ Once these physical steps are completed, the charging session can be initiated t
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -5127,7 +5127,7 @@ Once these physical steps are completed, the charging session can be initiated t
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -5189,13 +5189,13 @@ Once these physical steps are completed, the charging session can be initiated t
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -5252,7 +5252,7 @@ Once these physical steps are completed, the charging session can be initiated t
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -5265,7 +5265,7 @@ Once these physical steps are completed, the charging session can be initiated t
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -5329,13 +5329,13 @@ Once these physical steps are completed, the charging session can be initiated t
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123"
       },
@@ -5409,13 +5409,13 @@ Once these physical steps are completed, the charging session can be initiated t
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123"
       },
@@ -5425,7 +5425,7 @@ Once these physical steps are completed, the charging session can be initiated t
         }
       ],
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -5615,13 +5615,13 @@ API Implementation: The above under and overcharge scenarios are supported throu
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "INPROGRESS",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123"
       },
@@ -5673,7 +5673,7 @@ API Implementation: The above under and overcharge scenarios are supported throu
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -5684,7 +5684,7 @@ API Implementation: The above under and overcharge scenarios are supported throu
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -5749,13 +5749,13 @@ API Implementation: The above under and overcharge scenarios are supported throu
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "COMPLETED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -5812,7 +5812,7 @@ API Implementation: The above under and overcharge scenarios are supported throu
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -5823,7 +5823,7 @@ API Implementation: The above under and overcharge scenarios are supported throu
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -5871,13 +5871,13 @@ API Implementation: The above under and overcharge scenarios are supported throu
   },
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-ev-charging-001",
       "beckn:orderStatus": "COMPLETED",
       "beckn:seller": "cpo1.com",
       "beckn:buyer": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Buyer",
         "beckn:id": "user-123",
         "beckn:role": "BUYER",
@@ -5934,7 +5934,7 @@ API Implementation: The above under and overcharge scenarios are supported throu
         ]
       },
       "beckn:fulfillment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Fulfillment",
         "beckn:id": "fulfillment-001",
         "beckn:mode": "RESERVATION",
@@ -5945,7 +5945,7 @@ API Implementation: The above under and overcharge scenarios are supported throu
         }
       },
       "beckn:payment": {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:Payment",
         "beckn:id": "payment-123e4567-e89b-12d3-a456-426614174000",
         "beckn:amount": {
@@ -6096,7 +6096,7 @@ This API is **NOT** to be used to cancel an ongoing session. To cancel an ongoin
   "message": {
     "ratings": [
       {
-        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+        "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
         "@type": "beckn:RatingInput",
         "id": "fulfillment-001",
         "ratingValue": 4,
@@ -6160,7 +6160,7 @@ This API is **NOT** to be used to cancel an ongoing session. To cancel an ongoin
   "message": {
     "received": true,
     "feedbackForm": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Form",
       "url": "https://example-bpp.com/feedback/portal",
       "mime_type": "application/xml",
@@ -6212,7 +6212,7 @@ This API is **NOT** to be used to cancel an ongoing session. To cancel an ongoin
     "refId": "order-ev-charging-001",
     "refType": "ORDER",
     "support": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:SupportInfo",
       "name": "Ravi Kumar",
       "phone": "+91-9876543210",
@@ -6267,7 +6267,7 @@ This API is **NOT** to be used to cancel an ongoing session. To cancel an ongoin
   },
   "message": {
     "support": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:SupportInfo",
       "name": "BlueCharge Support Team",
       "phone": "18001080",

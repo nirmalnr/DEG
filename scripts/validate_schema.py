@@ -56,13 +56,13 @@ EXAMPLE JSON STRUCTURE:
 {
   "message": {
     "order": {
-      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+      "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
       "@type": "beckn:Order",
       "beckn:id": "order-123",
       "beckn:orderItems": [
         {
           "beckn:acceptedOffer": {
-            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+            "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
             "@type": "beckn:Offer",
             "beckn:offerAttributes": {
               "@context": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/schema/EvChargingOffer/v1.0/context.jsonld",

@@ -1,6 +1,6 @@
 {
   "@context": [
-    "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/core/v2/context.jsonld",
+    "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld",
     "https://www.w3.org/ns/credentials/v2",
     "../vocab.jsonld",
     {
