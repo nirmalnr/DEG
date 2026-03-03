@@ -387,7 +387,7 @@ _required_context := "https://raw.githubusercontent.com/beckn/DEG/refs/heads/p2p
 # Rule 15a – Buyer EnergyCustomer @context
 _order_violations contains msg if {
 	buyer_attrs := input.message.order["beckn:buyer"]["beckn:buyerAttributes"]
-	buyer_attrs["@type"] == "EnergyCustomer"
+	buyer_attrs["@type"] == "EnergyCustomer"I
 	buyer_attrs["@context"] != _required_context
 
 	msg := sprintf(
@@ -480,6 +480,65 @@ _order_violations contains msg if {
 	)
 }
 
+# --- Supplementary JSON-LD context checks (migrated from devkit) ---
+
+core_context_url := "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/core/v2/context.jsonld"
+
+# Object types that should always have the core context URL
+always_check_types := {
+	"beckn:Order",
+	"beckn:Offer",
+	"beckn:Fulfillment",
+	"beckn:Buyer",
+}
+
+# Object types to check only for the 'publish' action
+publish_check_types := {
+	"beckn:Catalog",
+	"beckn:Item",
+}
+
+# Helper to find all objects with a "@type" key
+objects_with_type[path] = object {
+	walk(input, [path, object])
+	is_object(object)
+	object["@type"]
+}
+
+# --- VIOLATIONS FOR ALWAYS-CHECKED TYPES ---
+
+_context_violations contains msg if {
+	some path, object in objects_with_type
+	type := object["@type"]
+ 	always_check_types[type]
+
+	not object["@context"]
+	msg := sprintf("Missing @context for object of type %s at path %s", [type, path])
+}
+
+_context_violations contains msg if {
+	some path, object in objects_with_type
+	type := object["@type"]
+	always_check_types[type]
+
+	provided_context := object["@context"]
+	provided_context != core_context_url
+	msg := sprintf("Invalid @context for %s at path %s. Expected '%s', got '%s'", [type, path, core_context_url, provided_context])
+}
+
+# --- VIOLATIONS FOR PUBLISH-ACTION TYPES ---
+
+_context_violations contains msg if {
+	input.context.action == "publish"
+	some path, object in objects_with_type
+	type := object["@type"]
+	publish_check_types[type]
+
+	provided_context := object["@context"]
+	provided_context != core_context_url
+	msg := sprintf("Invalid @context for %s in 'publish' action at path %s. Expected '%s', got '%s'", [type, path, core_context_url, provided_context])
+}
+
 # ===== Action-gated violations (public API) =====
 #
 # Rules are gated by message structure, not by action name, so they
@@ -510,6 +569,11 @@ violations contains msg if {
 	input.message.order
 	input.context.action != "status"
 	some msg in _test_consistency_violations
+}
+
+# JSON-LD context checks (supplementary)
+violations contains msg if {
+	some msg in _context_violations
 }
 
 # ===== Catalog publish rules =====
