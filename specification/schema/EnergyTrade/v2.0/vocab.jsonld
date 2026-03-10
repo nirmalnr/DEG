@@ -6,9 +6,18 @@
     "schema": "https://schema.org/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#"
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
   },
   "@graph": [
+    {
+      "@id": "deg:EnergyTrade",
+      "@type": "rdfs:Class",
+      "rdfs:label": "Energy Trade",
+      "rdfs:comment": "Deprecated. A subclass of beckn:Contract for P2P energy trading. Superseded by deg:P2PTrade.",
+      "rdfs:subClassOf": { "@id": "beckn:Contract" },
+      "owl:deprecated": true
+    },
     {
       "@id": "deg:EnergyTradeOffer",
       "@type": "rdfs:Class",
