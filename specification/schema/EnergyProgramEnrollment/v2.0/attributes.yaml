@@ -1,18 +1,15 @@
-$id: "https://schema.beckn.io/EnergyEnrollment/v2.0"
+$id: "https://schema.beckn.io/EnergyProgramEnrollment/v2.0"
 $schema: "https://json-schema.org/draft/2020-12/schema"
-title: EnergyEnrollment
-deprecated: true
-x-supersededBy: "https://schema.beckn.io/EnergyProgramEnrollment/v2.0"
-x-owl-equivalentClass: "deg:EnergyProgramEnrollment"
+title: EnergyProgramEnrollment
+x-owl-equivalentClass: "deg:EnergyEnrollment"
 description: >
-  ⚠️ DEPRECATED — Use EnergyProgramEnrollment/v2.0 instead. This schema is preserved
-  for backward compatibility. See deg:EnergyEnrollment owl:equivalentClass
-  deg:EnergyProgramEnrollment in vocab.jsonld.
-
   Attribute schema for program enrollment (Fulfillment.fulfillmentAttributes and Contract.orderAttributes).
   These attributes support the onboarding flow where BPP verifies credentials, checks for conflicts,
   and issues enrollment credentials. Used in init requests (fulfillmentAttributes) and init/confirm
   responses (Contract.orderAttributes).
+
+  EnergyProgramEnrollment is the successor to EnergyEnrollment (v0.2, v2.0).
+  OWL migration: deg:EnergyProgramEnrollment owl:equivalentClass deg:EnergyEnrollment.
 x-tags:
   - energy-enrollment
   - demand-response
@@ -22,7 +19,7 @@ type: object
 additionalProperties: true
 x-jsonld:
   "@context": ./context.jsonld
-  "@type": EnergyEnrollment
+  "@type": EnergyProgramEnrollment
 properties:
 
   userAuth:

@@ -1,6 +1,8 @@
 # EnergyTrade — v0.3
 
-Combined attribute schemas for P2P energy trading (OpenAPI 3.1.1 format).
+> ⚠️ **Deprecated** — `EnergyTrade` v0.3 is superseded by [`P2PTrade/v2.0`](../../P2PTrade/v2.0/). The combined OpenAPI 3.1.1 schema has been split into 7 independent domain schemas. See the [EnergyTrade root README](../README.md) for the migration guide.
+
+Combined attribute schemas for P2P energy trading (OpenAPI 3.1.1 format). Preserved for backward compatibility.
 
 Part of the [DEG Schema](../../../README.md) · [EnergyTrade](../README.md)
 
@@ -20,7 +22,7 @@ This version uses a **combined file** containing all energy trade domain schemas
 |--------|----------------------|-------------|
 | `EnergyTradeOffer` | `Offer.offerAttributes` | Pricing models, delivery windows, and optional gift parameters |
 | `EnergyGift` | `EnergyTradeOffer.gift` | Gift energy — lookupHash, claim verifier, expiration |
-| `EnergyTradeOrder` | `Order.orderAttributes` | Platform and utility identifiers for the trade order |
+| `EnergyTradeOrder` | `Contract.orderAttributes` | Platform and utility identifiers for the trade contract (formerly `Order.orderAttributes` — see `beckn:Order owl:equivalentClass beckn:Contract`) |
 | `EnergyTradeDelivery` | `orderItemAttributes.fulfillmentAttributes` | Real-time delivery tracking |
 | `EnergyResource` | `Item.itemAttributes` | Energy source characteristics |
 | `EnergyCustomer` | `Buyer.buyerAttributes`, `Provider.providerAttributes` | Customer info: meterId, sanctionedLoad, utilityCustomerId |

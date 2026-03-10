@@ -16,7 +16,8 @@
       "rdfs:label": "Energy Trade",
       "rdfs:comment": "Deprecated. A subclass of beckn:Contract for P2P energy trading. Superseded by deg:P2PTrade.",
       "rdfs:subClassOf": { "@id": "beckn:Contract" },
-      "owl:deprecated": true
+      "owl:deprecated": true,
+      "owl:equivalentClass": { "@id": "deg:P2PTrade" }
     },
     {
       "@id": "deg:EnergyTradeOffer",
@@ -28,7 +29,7 @@
       "@id": "deg:EnergyTradeOrder",
       "@type": "rdfs:Class",
       "rdfs:label": "Energy Trade Order",
-      "rdfs:comment": "Order attributes for P2P energy trading, attached to Order.orderAttributes."
+      "rdfs:comment": "Contract attributes for P2P energy trading, attached to Contract.orderAttributes. Previously referenced as Order.orderAttributes (see beckn:Order owl:deprecated)."
     },
     {
       "@id": "deg:EnergyTradeOrderInterUtility",

@@ -1,6 +1,9 @@
 # EnergyTrade — v2.0
 
-> ⚠️ **Deprecated** — This schema is superseded by [`P2PTrade`](../../P2PTrade/v2.0/). Use `P2PTrade` (a subclass of `EnergyContract`) for all new energy contract implementations.
+> ⚠️ **Deprecated** — This schema is preserved for backward compatibility. Use [`P2PTrade/v2.0`](../../P2PTrade/v2.0/) for all new implementations.
+>
+> **OWL Migration:** `deg:EnergyTrade owl:equivalentClass deg:P2PTrade` · `beckn:Order owl:equivalentClass beckn:Contract`
+> See [vocab.jsonld](./vocab.jsonld) for the machine-readable deprecation declaration.
 
 P2P energy trade contract — a subclass of [`Contract`](https://schema.beckn.io/Contract/v2.0) specialised for energy delivery between prosumers on a DEG network.
 
@@ -42,6 +45,20 @@ Part of the [DEG Schema](../../../README.md) · [EnergyTrade](../README.md)
 | `customer` | `EnergyCustomer` | — | Energy customer attributes. |
 
 *Plus all inherited `Contract` properties: `id`, `displayId`, `items`, `status`, `contractValue`, `participants`, `entitlements`, `fulfillments`.*
+
+## Vocabulary Migration Path
+
+This table maps deprecated `EnergyTrade/v2.0` concepts to their successors in `P2PTrade/v2.0`:
+
+| Deprecated Term | Old Beckn Attachment | Successor Schema | New Beckn Attachment | OWL Relation |
+|-----------------|---------------------|-----------------|---------------------|-------------|
+| `deg:EnergyTrade` class | `beckn:Order` subclass | `deg:P2PTrade` | `beckn:Contract` subclass | `owl:equivalentClass` |
+| `EnergyTradeOrder.bap_id` / `bpp_id` | `Order.orderAttributes` | [`EnergyTradeOrder/v2.0`](../../EnergyTradeOrder/v2.0/) | `Contract.orderAttributes` | `owl:equivalentProperty` |
+| `EnergyTradeDelivery.*` | `orderItemAttributes.fulfillmentAttributes` | [`EnergyTradeDelivery/v2.0`](../../EnergyTradeDelivery/v2.0/) | `Contract.items[].fulfillment.attributes` | `rdfs:seeAlso` |
+| `EnergyOrderItem.*` | `orderItemAttributes` | [`EnergyOrderItem/v2.0`](../../EnergyOrderItem/v2.0/) | `Contract.items[]` | `rdfs:seeAlso` |
+| `EnergyCustomer.*` | `Buyer.buyerAttributes` | [`EnergyCustomer/v2.0`](../../EnergyCustomer/v2.0/) | `Contract.buyer.buyerAttributes` | `rdfs:seeAlso` |
+
+**Root OWL declaration:** `beckn:Order owl:equivalentClass beckn:Contract` — see [`schemas/schema/Contract/v2.0/vocab.jsonld`](https://github.com/beckn/schemas/blob/main/schema/Contract/v2.0/vocab.jsonld)
 
 ## Changes from v0.3
 

@@ -1,20 +1,15 @@
-# EnergyEnrollment — v2.0
+# EnergyProgramEnrollment — v2.0
 
-> ⚠️ **Deprecated** — This schema is preserved for backward compatibility. Use [`EnergyProgramEnrollment/v2.0`](../../EnergyProgramEnrollment/v2.0/) for all new implementations.
->
-> **OWL Migration:** `deg:EnergyEnrollment owl:equivalentClass deg:EnergyProgramEnrollment` · `beckn:Order owl:equivalentClass beckn:Contract`
-> See [vocab.jsonld](./vocab.jsonld) for the machine-readable deprecation declaration.
-
-## Vocabulary Migration Path
-
-| Deprecated Term | Attachment Point (old) | New Schema | Attachment Point (new) | OWL Relation |
-|-----------------|----------------------|-----------|----------------------|-------------|
-| `deg:EnergyEnrollment` class | `Fulfillment.fulfillmentAttributes` + `Order.orderAttributes` | `deg:EnergyProgramEnrollment` | `Fulfillment.fulfillmentAttributes` + `Contract.orderAttributes` | `owl:equivalentClass` |
-| `Order.orderAttributes` | init/confirm response | `Contract.orderAttributes` | init/confirm response | `beckn:Order owl:equivalentClass beckn:Contract` |
+> **Canonical IRI:** [`https://schema.beckn.io/EnergyProgramEnrollment`](https://schema.beckn.io/EnergyProgramEnrollment)
+> **Tags:** `energy, enrollment, program, demand-response, vpp, p2p, beckn`
+> **OWL:** `deg:EnergyProgramEnrollment owl:equivalentClass deg:EnergyEnrollment` (successor schema)
+> Part of the [DEG Schema](../../../README.md) · [EnergyProgramEnrollment](../README.md)
 
 ## Introduction
 
-The **EnergyEnrollment** schema composes with the core Beckn `Fulfillment` and `Contract` entities to support program enrollment flows for Digital Energy Programs (VPPs, demand response, P2P trading, etc.). This schema enables credential-based enrollment where the BPP verifies provided credentials, checks for conflicts, and issues enrollment credentials without needing to perform initial eligibility or ownership checks.
+The **EnergyProgramEnrollment** schema composes with the core Beckn `Fulfillment` and `Contract` entities to support program enrollment flows for Digital Energy Programs (VPPs, demand response, P2P trading, etc.). This schema enables credential-based enrollment where the BPP verifies provided credentials, checks for conflicts, and issues enrollment credentials without needing to perform initial eligibility or ownership checks.
+
+**Successor to:** [`EnergyEnrollment/v2.0`](../../EnergyEnrollment/v2.0/) (deprecated) and [`EnergyEnrollment/v0.2`](../../EnergyEnrollment/v0.2/) (deprecated).
 
 ### Use Cases
 
@@ -39,7 +34,7 @@ The **EnergyEnrollment** schema composes with the core Beckn `Fulfillment` and `
 
 This schema composes with:
 - `core/v2/attributes.yaml#Fulfillment.fulfillmentAttributes` - For credentials and existing enrollments in `init` requests
-- `core/v2/attributes.yaml#Order.orderAttributes` - For enrollment details, verification results, and enrollment credentials in responses
+- `core/v2/attributes.yaml#Contract.orderAttributes` - For enrollment details, verification results, and enrollment credentials in responses
 
 ## Context and Type Coercion
 

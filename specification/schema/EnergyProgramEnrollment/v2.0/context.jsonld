@@ -125,8 +125,8 @@
       "connectionType": "deg:connectionType",
       "sanctionedLoad": "deg:sanctionedLoad",
       "beckn": "https://schema.beckn.io/core/v2.0/",
-      "deg": "https://schema.beckn.io/deg/EnergyEnrollment/v2.0/",
-      "@comment": "DEPRECATED: deg:EnergyEnrollment is superseded by deg:EnergyProgramEnrollment. owl:equivalentClass declared in vocab.jsonld. Use EnergyProgramEnrollment/v2.0 for new implementations."
+      "deg": "https://schema.beckn.io/deg/EnergyProgramEnrollment/v2.0/",
+      "@comment": "deg:EnergyProgramEnrollment is the successor to deg:EnergyEnrollment. owl:equivalentClass declared in vocab.jsonld."
     }
   ]
 }

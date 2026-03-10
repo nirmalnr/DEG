@@ -2,7 +2,8 @@
   "@context": {
     "@version": 1.1,
     "beckn": "https://schema.beckn.io/core/v2.0/",
-    "deg": "https://schema.beckn.io/deg/EnergyEnrollment/v2.0/",
+    "deg": "https://schema.beckn.io/deg/EnergyProgramEnrollment/v2.0/",
+    "degLegacy": "https://schema.beckn.io/deg/EnergyEnrollment/v2.0/",
     "schema": "https://schema.org/",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
@@ -13,14 +14,13 @@
   },
   "@graph": [
     {
-      "@id": "deg:EnergyEnrollment",
+      "@id": "deg:EnergyProgramEnrollment",
       "@type": "rdfs:Class",
       "rdfs:subClassOf": {
         "@id": "schema:ProgramMembership"
       },
-      "owl:deprecated": true,
-      "owl:equivalentClass": { "@id": "https://schema.beckn.io/deg/EnergyProgramEnrollment/v2.0#EnergyProgramEnrollment" },
-      "rdfs:comment": "Deprecated. Program enrollment/subscription. Extends schema:ProgramMembership for energy-specific enrollment flows. Superseded by deg:EnergyProgramEnrollment. See owl:equivalentClass for the migration path."
+      "owl:equivalentClass": { "@id": "degLegacy:EnergyEnrollment" },
+      "rdfs:comment": "Program enrollment/subscription for energy domain programs (VPPs, demand response, P2P trading, community solar). Extends schema:ProgramMembership. Successor to deg:EnergyEnrollment (see owl:equivalentClass). Attaches to Fulfillment.fulfillmentAttributes (init requests) and Contract.orderAttributes (confirm responses)."
     },
     {
       "@id": "vc:VerifiableCredential",

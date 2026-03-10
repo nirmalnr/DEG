@@ -15,6 +15,7 @@ Fulfillment attributes for P2P energy trade deliveries — tracks delivery statu
 | Version | Status | Notes |
 |---------|--------|-------|
 | [v2.0](./v2.0/) | Current | Initial JSON Schema release, split from combined EnergyTrade schema |
+| [v0.3](./v0.3/) | Deprecated | Original definition as a component in `EnergyTrade/v0.3/attributes.yaml` |
 
 ---
 

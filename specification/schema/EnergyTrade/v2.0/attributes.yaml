@@ -2,17 +2,23 @@ $id: "https://schema.beckn.io/EnergyTrade/v2.0"
 $schema: "https://json-schema.org/draft/2020-12/schema"
 title: EnergyTrade
 deprecated: true
+x-supersededBy: "https://schema.beckn.io/deg/P2PTrade/v2.0"
+x-owl-equivalentClass: "deg:P2PTrade"
 description: >
+  ⚠️ DEPRECATED — Use P2PTrade/v2.0 instead. This schema is preserved for
+  backward compatibility. See deg:EnergyTrade owl:equivalentClass deg:P2PTrade
+  and beckn:Order owl:equivalentClass beckn:Contract in the OWL vocabulary.
+
   JSON Schema for P2P energy trading contracts. EnergyTrade is a subclass of Contract
   that specialises the base beckn Contract for energy delivery between prosumers.
 
   An EnergyTrade brings together:
   - An energy resource (the item being traded — see EnergyResource)
   - An energy trade offer with pricing model and delivery window (see EnergyTradeOffer)
-  - A trade order identifying the BAP/BPP participants (see EnergyTradeOrder)
+  - A trade order identifying the BAP/BPP participants (see EnergyTradeOrder, Contract.orderAttributes)
   - A trade delivery tracking meter readings and status (see EnergyTradeDelivery)
   - Customer identity for buyer and provider sides (see EnergyCustomer)
-  - An order item wrapper linking customer and delivery data (see EnergyOrderItem)
+  - A contract item wrapper linking customer and delivery data (see EnergyOrderItem)
   - Optional gifting metadata (see EnergyGift)
 
   The seven domain schemas are defined in $defs and are also published independently

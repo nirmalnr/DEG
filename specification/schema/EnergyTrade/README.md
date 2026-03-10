@@ -27,10 +27,10 @@ Related domain schemas (split from the combined energy trade specification):
 
 ## Versions
 
-| Version | attributes.yaml | context.jsonld | vocab.jsonld | README |
-|---------|----------------|----------------|--------------|--------|
-| **v0.3** | [attributes.yaml](./v0.3/attributes.yaml) | [context.jsonld](./v0.3/context.jsonld) | [vocab.jsonld](./v0.3/vocab.jsonld) | [README](./v0.3/README.md) |
-| **v2.0** | [attributes.yaml](./v2.0/attributes.yaml) | [context.jsonld](./v2.0/context.jsonld) | [vocab.jsonld](./v2.0/vocab.jsonld) | [README](./v2.0/README.md) |
+| Version | attributes.yaml | context.jsonld | vocab.jsonld | README | Status |
+|---------|----------------|----------------|--------------|--------|--------|
+| **v0.3** | [attributes.yaml](./v0.3/attributes.yaml) | [context.jsonld](./v0.3/context.jsonld) | [vocab.jsonld](./v0.3/vocab.jsonld) | [README](./v0.3/README.md) | ⚠️ Deprecated |
+| **v2.0** | [attributes.yaml](./v2.0/attributes.yaml) | [context.jsonld](./v2.0/context.jsonld) | [vocab.jsonld](./v2.0/vocab.jsonld) | [README](./v2.0/README.md) | ⚠️ Deprecated · `owl:equivalentClass deg:P2PTrade` |
 
 ## Properties (latest: v2.0)
 
