@@ -1,0 +1,20 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "beckn": "https://schema.beckn.io/core/v2.0/",
+    "deg": "https://schema.beckn.io/deg/",
+    "schema": "https://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "deg:P2PTrade",
+      "@type": "rdfs:Class",
+      "rdfs:label": "P2P Trade",
+      "rdfs:comment": "A Peer-to-Peer energy trading contract on the DEG network. Subclass of deg:EnergyContract (which is a subclass of beckn:Contract).",
+      "rdfs:subClassOf": { "@id": "deg:EnergyContract" }
+    }
+  ]
+}
