@@ -406,7 +406,7 @@ Beckn Protocol v2 provides a composable schema architecture that enables:
 **Example**:
 ```json
 {
-  "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/EnergyResource/v0.2/context.jsonld",
+  "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/EnergyResource/v0.2/context.jsonld",
   "@type": "EnergyResource",
   "sourceType": "SOLAR",
   "deliveryMode": "GRID_INJECTION",
@@ -434,7 +434,7 @@ Beckn Protocol v2 provides a composable schema architecture that enables:
 **Example**:
 ```json
 {
-  "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/EnergyTradeOffer/v0.2/context.jsonld",
+  "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/EnergyTradeOffer/v0.2/context.jsonld",
   "@type": "EnergyTradeOffer",
   "pricingModel": "PER_KWH",
   "settlementType": "DAILY",
@@ -464,7 +464,7 @@ Beckn Protocol v2 provides a composable schema architecture that enables:
 **Example**:
 ```json
 {
-  "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/main/schema/EnergyTradeContract/v0.2/context.jsonld",
+  "@context": "https://raw.githubusercontent.com/beckn/protocol-specifications-v2/tags/core-2.0.0-rc-eos-release/schema/EnergyTradeContract/v0.2/context.jsonld",
   "@type": "EnergyTradeContract",
   "contractStatus": "ACTIVE",
   "sourceMeterId": "100200300",
