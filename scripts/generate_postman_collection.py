@@ -125,6 +125,17 @@ DEVKIT_CONFIGS = {
         "examples_path": "examples/p2p-trading-interdiscom/v2",
         # "output_path": "testnet/p2p-trading-interdiscom-devkit/postman",
         "structure": "flat"  # Flat file structure (like p2p-trading)
+    },
+    "demand-flex": {
+        "domain": "beckn.one:deg:demand-flex:2.0.0",
+        "bap_id": "p2p-trading-sandbox1.com",
+        "bap_uri": "http://onix-bap:8081/bap/receiver",
+        "bpp_id": "p2p-trading-sandbox2.com",
+        "bpp_uri": "http://onix-bpp:8082/bpp/receiver",
+        "bap_adapter_url": "http://localhost:8081/bap/caller",
+        "bpp_adapter_url": "http://localhost:8082/bpp/caller",
+        "examples_path": "examples/demand-flex/v2",
+        "structure": "flat"
     }
 }
 
@@ -133,7 +144,8 @@ ROLE_FILTERS = {
     "BAP": [
         r".*-request.*\.json$",  # P2P trading/enrollment: *-request*.json (includes suffixes like -otp, -oauth2)
         r"^\d+_(discover|select|init|confirm|status|update|track|rating|support|cancel)\.json$",  # EV charging: numbered folders
-        r"^(discover|select|init|confirm|status|update|track|rating|support|cancel).*\.json$"  # General pattern
+        r"^(discover|select|init|confirm|status|update|track|rating|support|cancel).*\.json$",  # General pattern
+        r"^subscribe-.*\.json$"  # BAP-initiated subscribe action (e.g., catalog subscribe)
     ],
     "BPP": [
         r"^(?!cascaded-).*-response.*\.json$",  # P2P trading/enrollment: *-response*.json (excludes cascaded-)
@@ -158,6 +170,7 @@ BAP_ACTIONS = {
     "rating": "rating",
     "support": "support",
     "cancel": "cancel",
+    "subscribe": "subscribe",
 }
 
 # BPP-initiated actions (not callbacks, but BPP initiating requests to CDS, etc.)
@@ -223,6 +236,14 @@ def extract_action_from_filename(filename: str, role: str) -> Optional[str]:
     
     # Handle P2P trading/enrollment flat structure - strict role-based matching
     if role == "BAP":
+        # First check for BAP-initiated actions (like subscribe-catalog.json)
+        if name.startswith('subscribe-'):
+            match = re.match(r'^(subscribe)-', name, re.IGNORECASE)
+            if match:
+                action = match.group(1).lower()
+                if action in BAP_ACTIONS:
+                    return action
+
         # BAP only matches *-request*.json (not *-response*.json)
         # Pattern: action-request or action-request-suffix
         if '-request' in name and '-response' not in name:
@@ -363,33 +384,26 @@ def replace_context_macros(data: Dict[str, Any]) -> Dict[str, Any]:
                 if ctx_key == "version":
                     new_context[ctx_key] = "{{version}}"
                 elif ctx_key == "domain":
-                    # Handle wildcard domains
-                    if isinstance(ctx_value, str) and "*" in ctx_value:
-                        new_context[ctx_key] = "{{domain}}"
-                    else:
-                        new_context[ctx_key] = "{{domain}}"
-                elif ctx_key == "bap_id":
+                    new_context[ctx_key] = "{{domain}}"
+                elif ctx_key in ("bap_id", "bapId"):
                     new_context[ctx_key] = "{{bap_id}}"
-                elif ctx_key == "bap_uri":
+                elif ctx_key in ("bap_uri", "bapUri"):
                     new_context[ctx_key] = "{{bap_uri}}"
-                elif ctx_key == "bpp_id":
+                elif ctx_key in ("bpp_id", "bppId"):
                     new_context[ctx_key] = "{{bpp_id}}"
-                elif ctx_key == "bpp_uri":
+                elif ctx_key in ("bpp_uri", "bppUri"):
                     new_context[ctx_key] = "{{bpp_uri}}"
-                elif ctx_key == "transaction_id":
+                elif ctx_key in ("transaction_id", "transactionId"):
                     new_context[ctx_key] = "{{transaction_id}}"
-                elif ctx_key == "message_id":
+                elif ctx_key in ("message_id", "messageId"):
                     new_context[ctx_key] = "{{$guid}}"
                 elif ctx_key == "timestamp":
                     new_context[ctx_key] = "{{iso_date}}"
                 elif ctx_key == "ttl":
-                    # Keep TTL as constant
                     new_context[ctx_key] = ctx_value
-                elif ctx_key == "schema_context":
-                    # Preserve schema_context array as-is
+                elif ctx_key in ("schema_context", "schemaContext"):
                     new_context[ctx_key] = ctx_value
                 elif ctx_key == "action":
-                    # Keep action as-is (needed for routing)
                     new_context[ctx_key] = ctx_value
                 else:
                     # Preserve other context fields (e.g., location)
@@ -684,7 +698,7 @@ def main():
     parser.add_argument(
         "--devkit",
         type=str,
-        choices=["ev-charging", "p2p-trading", "p2p-enrollment", "p2p-trading-interdiscom"],
+        choices=["ev-charging", "p2p-trading", "p2p-enrollment", "p2p-trading-interdiscom", "demand-flex"],
         required=True,
         help="Devkit type: 'ev-charging', 'p2p-trading', 'p2p-enrollment', or 'p2p-trading-interdiscom'"
     )
@@ -746,7 +760,7 @@ def main():
     
     # Generate collection name if not provided
     if args.name is None:
-        collection_name = f"{args.devkit}:{args.role}-DEG"
+        collection_name = f"{args.devkit}.{args.role}-DEG"
     else:
         collection_name = args.name
     
