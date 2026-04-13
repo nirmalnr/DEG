@@ -52,7 +52,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/publish-catalog.json"
+            $ref: "../examples/usecase1/publish-catalog.json"
 
   - workflowId: discover
     summary: Discom discovers available AMI meter datasets via discover service
@@ -63,7 +63,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/discover-request.json"
+            $ref: "../examples/usecase1/discover-request.json"
 
   - workflowId: select-through-status
     summary: Discom selects, confirms, and receives AMI meter data delivery
@@ -74,7 +74,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/select-request.json"
+            $ref: "../examples/usecase1/select-request.json"
 
       - stepId: on-select
         description: AMISP responds with terms for selected dataset (existing contract)
@@ -82,7 +82,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/on-select-response.json"
+            $ref: "../examples/usecase1/on-select-response.json"
 
       - stepId: init
         description: BAP provides billing details and buyer organization info
@@ -90,7 +90,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/init-request.json"
+            $ref: "../examples/usecase1/init-request.json"
 
       - stepId: on-init
         description: BPP confirms contract is ready for payment
@@ -98,7 +98,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/on-init-response.json"
+            $ref: "../examples/usecase1/on-init-response.json"
 
       - stepId: confirm
         description: BAP confirms contract with payment settlement
@@ -106,7 +106,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/confirm-request.json"
+            $ref: "../examples/usecase1/confirm-request.json"
 
       - stepId: on-confirm
         description: BPP acknowledges payment and begins credential preparation
@@ -114,7 +114,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/on-confirm-response.json"
+            $ref: "../examples/usecase1/on-confirm-response.json"
 
       - stepId: status
         description: BAP checks delivery status
@@ -122,7 +122,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/status-request.json"
+            $ref: "../examples/usecase1/status-request.json"
 
       - stepId: on-status-processing
         description: BPP reports credential verification in progress
@@ -130,7 +130,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/on-status-response-processing.json"
+            $ref: "../examples/usecase1/on-status-response-processing.json"
 
       - stepId: on-status-ready-url
         description: >
@@ -141,7 +141,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/on-status-response-ready-url.json"
+            $ref: "../examples/usecase1/on-status-response-ready-url.json"
 
       - stepId: on-status-ready-inline
         description: >
@@ -152,7 +152,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/on-status-response-ready-inline.json"
+            $ref: "../examples/usecase1/on-status-response-ready-inline.json"
 
   - workflowId: discover-service-catalog-subscription
     summary: Discover service subscribes to catalog service for real-time catalog updates
@@ -163,7 +163,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/subscribe-catalog.json"
+            $ref: "../examples/usecase1/subscribe-catalog.json"
 
   - workflowId: energy-data-exchange-cancellation
     summary: Contract cancellation with refund
@@ -174,7 +174,7 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/cancel-request.json"
+            $ref: "../examples/usecase1/cancel-request.json"
 
       - stepId: on-cancel
         description: BPP confirms cancellation with refund settlement
@@ -182,4 +182,133 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            $ref: "../examples/v2/on-cancel-response.json"
+            $ref: "../examples/usecase1/on-cancel-response.json"
+
+  # ── Use Case 2: Discom ARR Filing to Regulator ──
+
+  - workflowId: uc2-publish-catalog
+    summary: Discom publishes ARR filing catalog to catalog service
+    steps:
+      - stepId: publish-catalog
+        description: Discom publishes ARR filing catalog with DatasetItem resources
+        operationId: beckn-bpp-caller.catalogPublish
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/publish-catalog.json"
+
+  - workflowId: uc2-discover
+    summary: Regulator discovers available ARR filings via discover service
+    steps:
+      - stepId: discover
+        description: Regulator discovers available ARR filing datasets on the network
+        operationId: beckn-bap-caller.discover
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/discover-request.json"
+
+  - workflowId: uc2-select-through-status
+    summary: Regulator selects, confirms, and receives ARR filing delivery
+    steps:
+      - stepId: select
+        description: Regulator selects ARR filing dataset for inline delivery
+        operationId: beckn-bap-caller.select
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/select-request.json"
+
+      - stepId: on-select
+        description: Discom responds with terms for selected ARR filing (regulatory mandate)
+        operationId: beckn-bpp-caller.onSelect
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/on-select-response.json"
+
+      - stepId: init
+        description: Regulator provides details for ARR filing exchange
+        operationId: beckn-bap-caller.init
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/init-request.json"
+
+      - stepId: on-init
+        description: Discom confirms readiness to deliver ARR filing
+        operationId: beckn-bpp-caller.onInit
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/on-init-response.json"
+
+      - stepId: confirm
+        description: Regulator confirms ARR filing exchange
+        operationId: beckn-bap-caller.confirm
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/confirm-request.json"
+
+      - stepId: on-confirm
+        description: Discom acknowledges and begins ARR filing preparation
+        operationId: beckn-bpp-caller.onConfirm
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/on-confirm-response.json"
+
+      - stepId: status
+        description: Regulator checks ARR filing delivery status
+        operationId: beckn-bap-caller.status
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/status-request.json"
+
+      - stepId: on-status-processing
+        description: Discom reports ARR filing preparation in progress
+        operationId: beckn-bpp-caller.onStatus
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/on-status-response-processing.json"
+
+      - stepId: on-status-ready-url
+        description: Discom delivers ARR filing via URL download
+        operationId: beckn-bpp-caller.onStatus
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/on-status-response-ready-url.json"
+
+      - stepId: on-status-ready-inline
+        description: >
+          Discom delivers ARR filing inline via dataPayload.
+          This step demonstrates DatasetItem's in-message delivery
+          with an IES_ARR_Filing embedded in dataPayload.
+        operationId: beckn-bpp-caller.onStatus
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/on-status-response-ready-inline.json"
+
+  - workflowId: uc2-cancellation
+    summary: ARR filing exchange cancellation
+    steps:
+      - stepId: cancel
+        description: Regulator cancels the ARR filing exchange
+        operationId: beckn-bap-caller.cancel
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/cancel-request.json"
+
+      - stepId: on-cancel
+        description: Discom confirms cancellation
+        operationId: beckn-bpp-caller.onCancel
+        requestBody:
+          contentType: application/json
+          payload:
+            $ref: "../examples/usecase2/on-cancel-response.json"

@@ -95,7 +95,7 @@ energy-data-exchange-devkit/
 │   ├── local-simple-bap.yaml        # BAP adapter (port 8081)
 │   ├── local-simple-bpp.yaml        # BPP adapter (port 8082)
 │   └── local-simple-routing-*.yaml  # Routing rules (domain: nfh.global/testnet-deg)
-├── examples/v2/                     # Beckn 2.0 example payloads
+├── examples/usecase1/                     # Beckn 2.0 example payloads
 │   ├── publish-catalog.json         # BPP publishes DatasetItem catalog
 │   ├── subscribe-catalog.json       # BAP subscribes to catalog updates
 │   ├── discover-request.json        # BAP discovers datasets

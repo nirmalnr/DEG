@@ -5,14 +5,30 @@
 # adapter testnet, verifying each step returns ACK.
 #
 # Usage:
-#   ./scripts/test-workflow.sh                    # uses defaults
+#   ./scripts/test-workflow.sh                       # runs usecase1
+#   ./scripts/test-workflow.sh usecase2              # runs usecase2
+#   ./scripts/test-workflow.sh all                   # runs both
 #   BAP_URL=http://host:8081/bap/caller ./scripts/test-workflow.sh
 
 set -euo pipefail
 
 BAP_URL="${BAP_URL:-http://localhost:8081/bap/caller}"
 BPP_URL="${BPP_URL:-http://localhost:8082/bpp/caller}"
-EXAMPLES="$(cd "$(dirname "$0")/.." && pwd)/examples/v2"
+USECASE="${1:-usecase1}"
+DEVKIT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [ "$USECASE" = "all" ]; then
+  "$0" usecase1
+  echo ""
+  "$0" usecase2
+  exit $?
+fi
+
+EXAMPLES="$DEVKIT_ROOT/examples/$USECASE"
+if [ ! -d "$EXAMPLES" ]; then
+  echo "ERROR: examples directory not found: $EXAMPLES"
+  exit 1
+fi
 
 passed=0
 failed=0
@@ -58,8 +74,8 @@ else: print('?')
 }
 
 echo ""
-echo "Energy Data Exchange Devkit - Workflow Test"
-echo "============================================"
+echo "Energy Data Exchange Devkit - Workflow Test ($USECASE)"
+echo "======================================================="
 echo "BAP: $BAP_URL"
 echo "BPP: $BPP_URL"
 echo ""
