@@ -1,155 +1,142 @@
 # Demand Flex Devkit
 
-## Goal
+Beckn Protocol v2.0 devkit for **behavioral demand response**. A utility publishes flexibility needs (peak demand reduction), and aggregators discover, commit to, and deliver demand flexibility — with settlement based on measured performance.
 
-This devkit enables developers to prototype and test **behavioral demand response** (demand-flex) workflows on the Beckn protocol. A utility publishes flex needs on the network, and consumers or aggregators discover, select, and commit to providing demand flexibility during peak events.
+## Scenario
 
-The devkit includes:
-- Pre-configured Beckn ONIX adapters (BAP + BPP) with OPA policy checking
-- Sandbox applications for simulating consumer and utility endpoints
-- Postman collections covering the full contract lifecycle
-- Schema-validated example payloads for every API action
+**TPDDL** (Tata Power Delhi Distribution, the utility) publishes a 500 kW curtailment need during a peak event window. **GreenFlex Aggregator** discovers the opportunity, enrolls participating meters, and commits to providing 150 kW of demand reduction. After the event, TPDDL publishes baselines, measured actuals, and computes settlement (e.g., 150 kWh x 3.5 INR/kWh = 525 INR).
 
-## Architecture
+## Key Schemas
+
+| Schema | Slot | Description |
+|--------|------|-------------|
+| [DemandFlexNeed](../../specification/schema/DemandFlexNeed/v2.0/) | `resourceAttributes` | Direction (REDUCE/INCREASE), event window, capacity type, location |
+| [DemandFlexBuyOffer](../../specification/schema/DemandFlexBuyOffer/v2.0/) | `offerAttributes` | Incentive per kWh, baseline methodology, penalty rate |
+| [DEGContract](../../specification/schema/DEGContract/v2.0/) | `contractAttributes` | Roles (buyer/seller), policy reference, revenue flows |
+| [DemandFlexPerformance](../../specification/schema/DemandFlexPerformance/v2.0/) | `performanceAttributes` | M&V baselines and actuals per meter |
+
+## Transaction Flow
 
 ```
-┌─────────────┐         ┌──────────┐         ┌─────────────┐
-│  Sandbox BAP │◄───────►│ ONIX BAP │◄───────►│  ONIX BPP   │◄───────►│ Sandbox BPP │
-│  (Consumer)  │  :3001  │  :8081   │         │   :8082     │  :3002  │  (Utility)  │
-└─────────────┘         └──────────┘         └─────────────┘         └─────────────┘
-                              │                     │
-                              └────── Redis ────────┘
-                                     :6379
+BPP (TPDDL Utility)  Catalog Service    Discovery Service    BAP (GreenFlex Agg)
+    |                      |                   |                     |
+    |-- publish ---------->|                   |                     |
+    |   (DemandFlexNeed    |                   |                     |
+    |    + BuyOffer)       |                   |                     |
+    |                      |<-- subscribe -----|                     |
+    |                      |   (catalog updates)                    |
+    |                      |                   |                     |
+    |                      |                   |<---- discover ------|
+    |                      |                   |    (CURTAILMENT +   |
+    |                      |                   |     REDUCE filter)  |
+    |                      |                   |---- on_discover --->|
+    |                      |                   |                     |
+    |------------------------------------------------------+--------|
+    |                Direct BAP <-> BPP negotiation        |        |
+    |                                                               |
+    |<---- select (150 kW of 500 kW needed) ------------------------|
+    |---- on_select (DRAFT contract) ------------------------------>|
+    |                                                               |
+    |<---- init (aggregator identity + 2 meters) -------------------|
+    |---- on_init (DRAFT, identity acknowledged) ------------------>|
+    |                                                               |
+    |<---- confirm (contract ACTIVE) -------------------------------|
+    |---- on_confirm (ACTIVE) ------------------------------------->|
+    |                                                               |
+    |<---- update (opt-in meter 003, adjust to 120 kW) -------------|
+    |                                                               |
+    |  +- Pre-event: Baselines -----------------------------------+ |
+    |  | on_status (BASELINE_PUBLISHED)                            | |
+    |  |   meters: [{ baselineKw: 45 }, { 38 }, { 52 }]           |>|
+    |  +-----------------------------------------------------------+ |
+    |                                                               |
+    |  +- Post-event: Actuals ------------------------------------+ |
+    |  | on_status (DELIVERY_COMPLETE)                             | |
+    |  |   meters: [{ actualKw: 20 }, { 15 }, { 25 }]             |>|
+    |  +-----------------------------------------------------------+ |
+    |                                                               |
+    |  +- Settlement ---------------------------------------------+ |
+    |  | on_status (SETTLED)                                       | |
+    |  |   revenueFlows: 150 kWh x 3.5 INR/kWh = 525 INR         |>|
+    |  +-----------------------------------------------------------+ |
 ```
-
-**Message flow:**
-1. Utility (BPP) publishes flex catalog via `catalog_publish`
-2. Consumer (BAP) discovers and selects offers via `select`
-3. Consumer provides identity at `init`, confirms at `confirm`
-4. Consumer updates participating meters via `update`
-5. Utility sends baselines and actuals via `on_status`
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
-- [Git](https://git-scm.com/)
-- [Postman](https://www.postman.com/downloads/) (for testing API flows)
+- Git, Docker, Docker Compose
+- Postman (optional, for manual testing)
 
-## Setup
-
-```bash
-# Clone the repo
-git clone https://github.com/beckn/DEG.git
-cd DEG
-git checkout p2p-trading-becknv2
-
-# Navigate to devkit
-cd devkits/demand-flex
-```
-
-### Upstream Projects
-
-| Component | Repository | Image |
-|:----------|:-----------|:------|
-| ONIX Adapter | [beckn/beckn-onix](https://github.com/beckn/beckn-onix) | `fidedocker/onix-adapter:1.5.0` |
-| Sandbox | [beckn/beckn-sandbox](https://github.com/beckn/beckn-sandbox) | `fidedocker/sandbox-2.0:latest` |
-
-## Running the Test Network
-
-### 1. Start services
+## Quick Start
 
 ```bash
+# 1. Start infrastructure
 cd install
 docker compose -f docker-compose-demand-flex.yml up -d
+
+# 2. Verify services
+curl http://localhost:8081/health   # BAP adapter
+curl http://localhost:8082/health   # BPP adapter
+curl http://localhost:3001/api/health  # BAP sandbox
+curl http://localhost:3002/api/health  # BPP sandbox
+
+# 3. Import Postman collections from postman/ directory
+#    or run the Arazzo workflow:
+cd ..
+npx @redocly/cli respect workflows/demand-flex.arazzo.yaml \
+  --severity 'SCHEMA_CHECK=off' -v
 ```
 
-Verify all containers are running:
-```bash
-docker compose -f docker-compose-demand-flex.yml ps
+## Repository Structure
+
+```
+demand-flex/
+├── config/                              # Onix adapter configs
+│   ├── local-demand-flex-bap.yaml       #   BAP adapter (port 8081)
+│   ├── local-demand-flex-bpp.yaml       #   BPP adapter (port 8082)
+│   └── local-demand-flex-routing-*.yaml #   Routing rules
+├── install/
+│   └── docker-compose-demand-flex.yml   # Docker services
+├── postman/
+│   ├── demand-flex.BAP-DEG.postman_collection.json
+│   └── demand-flex.BPP-DEG.postman_collection.json
+└── workflows/
+    └── demand-flex.arazzo.yaml          # Arazzo 1.0.1 workflow spec
 ```
 
-### 2. Import Postman collections
+Example payloads live at the repo root: [`examples/demand-flex/v2/`](../../examples/demand-flex/v2/)
 
-Import the following collections into Postman from `postman/`:
-- `demand-flex:BAP-DEG.postman_collection.json` (consumer/aggregator flows)
-- `demand-flex:BPP-DEG.postman_collection.json` (utility flows)
+## Network Configuration
 
-### 3. Test the flow
+| Parameter | Value |
+|-----------|-------|
+| Domain | `beckn.one:deg:demand-flex:2.0.0` |
+| Network | `beckn.one/testnet` |
+| BAP ID | `greenflex-agg.example.com` |
+| BPP ID | `tpddl-utility.example.com` |
+| BAP Adapter | `http://localhost:8081/bap/caller` |
+| BPP Adapter | `http://localhost:8082/bpp/caller` |
 
-Execute requests in this order:
+## Workflow Steps
 
-| Step | Collection | Folder | Description |
-|:-----|:-----------|:-------|:------------|
-| 1 | BPP | publish | Utility publishes flex catalog |
-| 2 | BAP | select | Consumer selects a flex offer |
-| 3 | BAP | init | Consumer provides identity and taker details |
-| 4 | BAP | confirm | Consumer confirms the contract |
-| 5 | BAP | update | Consumer sends participating meters |
-| 6 | BPP | on_status | Utility sends baselines (pre-event) |
-| 7 | BPP | on_status | Utility sends actuals + settlement (post-event) |
+| # | Action | Who | Description |
+|---|--------|-----|-------------|
+| 1 | `catalog/publish` | BPP | Utility publishes flex catalog (500 kW curtailment need) |
+| 2 | `catalog/subscribe` | Discover Service | Discover service subscribes to catalog updates |
+| 3 | `discover` | BAP | Aggregator discovers CURTAILMENT + REDUCE offers |
+| 4 | `select` | BAP | Aggregator selects 150 kW of the 500 kW offer |
+| 5 | `on_select` | BPP | Utility returns DRAFT contract |
+| 6 | `init` | BAP | Aggregator provides identity + 2 participating meters |
+| 7 | `on_init` | BPP | Utility acknowledges (DRAFT) |
+| 8 | `confirm` | BAP | Aggregator confirms contract (ACTIVE) |
+| 9 | `on_confirm` | BPP | Utility confirms ACTIVE status |
+| 10 | `update` | BAP | Aggregator opts in meter 003, adjusts to 120 kW |
+| 11 | `on_status` (baselines) | BPP | Utility publishes baseline values per meter |
+| 12 | `on_status` (actuals) | BPP | Utility publishes measured actuals |
+| 13 | `on_status` (settled) | BPP | Utility computes settlement: 525 INR payable |
 
-### 4. Cleanup
+## Policy Enforcement
 
-```bash
-docker compose -f docker-compose-demand-flex.yml down -v
-```
-
-## Configuration
-
-### Environment Variables
-
-| Variable Name | Value | Notes |
-|:-------------|:------|:------|
-| `domain` | `beckn.one:deg:demand-flex:2.0.0` | |
-| `version` | `2.0.0` | Beckn protocol version |
-| `bap_id` | `demand-flex-sandbox1.com` | Consumer/aggregator BAP |
-| `bpp_id` | `demand-flex-sandbox2.com` | Utility BPP |
-| `bap_uri` | `http://onix-bap:8081/bap/receiver` | BAP callback URL |
-| `bpp_uri` | `http://onix-bpp:8082/bpp/receiver` | BPP request URL |
-
-### Config Files
-
-| File | Purpose |
-|:-----|:--------|
-| [`config/local-demand-flex-bap.yaml`](config/local-demand-flex-bap.yaml) | BAP adapter: registry, keys, schema validation, policy, routing |
-| [`config/local-demand-flex-bpp.yaml`](config/local-demand-flex-bpp.yaml) | BPP adapter: same structure, BPP keys and routing |
-| [`config/local-demand-flex-routing-*.yaml`](config/) | Routing tables for BAP/BPP receiver and caller modules |
-
-### Policy Enforcement
-
-This devkit uses the `opapolicychecker` plugin (new in onix-adapter 1.5.0) with the `checkPolicy` step:
-
-```yaml
-checkPolicy:
-  id: opapolicychecker
-  config:
-    type: url
-    location: "https://raw.githubusercontent.com/beckn/DEG/refs/heads/becknv2-demand-flex/specification/policies/demand_flex_network.rego"
-    query: "data.deg.policy.demand_flex_network.violations"
-    refreshIntervalSeconds: "300"
-```
-
-The current policy is a **noop** (no violations). Replace the `location` URL with a real policy as network rules mature.
-
-### Signing Keys
-
-This devkit reuses the Ed25519 signing keys from the p2p-trading devkit. For production, generate fresh keys:
-
-```bash
-# Using Go (from beckn-signing-kit)
-go run ./cmd/keygen
-```
-
-## Schemas
-
-Domain schemas are hosted on the `p2p-trading-becknv2` branch:
-
-| Schema | Slot | Description |
-|:-------|:-----|:------------|
-| [DemandFlexNeed](../../specification/schema/DemandFlexNeed/v2.0/) | `resourceAttributes` | Direction, event window, capacity type, location |
-| [DemandFlexBuyOffer](../../specification/schema/DemandFlexBuyOffer/v2.0/) | `offerAttributes` | Incentive, penalties, premiums, taker, policy ref |
-| [DEGContract](../../specification/schema/DEGContract/v2.0/) | `contractAttributes` | Contract type identifier |
-| [DemandFlexPerformance](../../specification/schema/DemandFlexPerformance/v2.0/) | `performanceAttributes` | M&V baselines and actuals per meter |
+Uses OPA (Open Policy Agent) via the `opapolicychecker` plugin. Current policy is a noop — replace the `location` URL in the config with a real policy as network rules mature.
 
 ## Regenerating Postman Collections
 
@@ -158,32 +145,17 @@ Domain schemas are hosted on the `p2p-trading-becknv2` branch:
 python3 scripts/generate_postman_collection.py \
   --devkit demand-flex --role BAP \
   --output-dir devkits/demand-flex/postman \
-  --name "demand-flex:BAP-DEG" \
-  --validate
+  --name "demand-flex:BAP-DEG" --validate
 
 python3 scripts/generate_postman_collection.py \
   --devkit demand-flex --role BPP \
   --output-dir devkits/demand-flex/postman \
-  --name "demand-flex:BPP-DEG" \
-  --validate
+  --name "demand-flex:BPP-DEG" --validate
 ```
 
-## Validating Examples
+## Related
 
-```bash
-# From repo root
-python3 scripts/validate_schema.py examples/demand-flex/v2/*.json
-```
-
-## Troubleshooting
-
-| Issue | Solution |
-|:------|:---------|
-| Adapter fails to start | Check Redis is healthy: `docker logs redis` |
-| Schema validation errors | Ensure schemas are pushed to `p2p-trading-becknv2` branch |
-| Policy check fails | Verify the rego URL is accessible: `curl -sI <url>` |
-| Port conflicts | Stop other devkits first, or modify port mappings in docker-compose |
-
-## Implementation Guide
-
-See the full [Demand Flexibility Implementation Guide](../../docs/implementation-guides/v2/Demand_Flexibility/Demand_Flexibility.md) for detailed protocol flows, schema mappings, and message examples.
+- [DemandFlexNeed Schema](../../specification/schema/DemandFlexNeed/v2.0/) — Flex resource attributes
+- [DemandFlexBuyOffer Schema](../../specification/schema/DemandFlexBuyOffer/v2.0/) — Incentive and policy terms
+- [Demand Flexibility Implementation Guide](../../docs/implementation-guides/v2/Demand_Flexibility/Demand_Flexibility.md) — Detailed protocol flows and schema mappings
+- [Data Exchange Devkit](../data-exchange/) — Companion devkit for energy data delivery
